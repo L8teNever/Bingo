@@ -14,5 +14,3 @@ instance/
 htmlcov/
 bingo.db
 .flaskenv
-Dockerfile
-docker-compose.yml
