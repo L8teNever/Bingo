@@ -8,12 +8,20 @@ import os
 
 app = Flask(__name__, instance_relative_config=True)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'bingo-secret-key-123')
-# Datenbank im 'instance' Ordner speichern für bessere Persistenz
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'bingo.db')
+
+# Datenbank-Pfad konfigurieren (Priorität: Umgebungsvariable > Instance-Ordner)
+if os.environ.get('DATABASE_URL'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+else:
+    # Standard: sqlite:///app/instance/bingo.db (im Container)
+    db_path = os.path.join(app.instance_path, 'bingo.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    os.makedirs(app.instance_path, exist_ok=True)
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Sicherstellen, dass der instance-Ordner existiert
-os.makedirs(app.instance_path, exist_ok=True)
+# Debug: Pfad anzeigen
+print(f"Nutze Datenbank: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 db.init_app(app)
 login_manager = LoginManager()
