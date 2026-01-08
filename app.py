@@ -195,6 +195,16 @@ def vote():
     
     return redirect(url_for('dashboard'))
 
+@app.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    new_password = request.form.get('new_password')
+    if new_password:
+        current_user.password_hash = generate_password_hash(new_password)
+        db.session.commit()
+        flash('Passwort erfolgreich geändert!')
+    return redirect(url_for('dashboard'))
+
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_panel():
@@ -224,11 +234,12 @@ def admin_panel():
 
         elif 'reward_points' in request.form:
             user_id = request.form.get('user_id')
+            new_points = request.form.get('points')
             user = User.query.get(user_id)
             if user:
-                user.points += 1
+                user.points = int(new_points)
                 db.session.commit()
-                flash(f'Punkt vergeben an {user.username}')
+                flash(f'Punkte für {user.username} auf {new_points} gesetzt.')
 
     users = User.query.all()
     settings = {s.key: s.value for s in Setting.query.all()}

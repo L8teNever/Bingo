@@ -75,10 +75,12 @@
                             style="opacity: 0.5; font-weight: 400;">({{ user.role }})</small></div>
                     <div style="color: var(--primary); font-size: 0.8rem;">Score: {{ user.points }}</div>
                 </div>
-                <form method="POST" style="margin: 0;">
+                <form method="POST" style="margin: 0; display: flex; gap: 0.5rem; align-items: center;">
                     <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="number" name="points" value="{{ user.points }}"
+                        style="width: 60px; padding: 0.5rem; border-radius: 10px; text-align: center;">
                     <button type="submit" name="reward_points" class="btn-secondary"
-                        style="padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; cursor: pointer;">+1</button>
+                        style="padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; cursor: pointer;">Set</button>
                 </form>
             </div>
             {% endfor %}
