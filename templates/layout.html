@@ -228,10 +228,146 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: rgba(242, 108, 13, 0.1);
+            color: var(--primary);
+        }
+
+        .sidebar-item i {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+        }
     </style>
 </head>
 
 <body>
+    {% if current_user.is_authenticated %}
+    <div class="sidebar-overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
+        <div style="padding: 1rem; margin-bottom: 2rem;">
+            <h2 style="font-size: 1.5rem;">Bingo Menu</h2>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Eingeloggt als {{ current_user.username }}</p>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="sidebar-item {{ 'active' if request.endpoint == 'dashboard' }}">
+            <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <a href="{{ url_for('leaderboard') }}" class="sidebar-item {{ 'active' if request.endpoint == 'leaderboard' }}">
+            <i class="fa-solid fa-chart-simple"></i> Statistiken
+        </a>
+        <a href="{{ url_for('settings') }}" class="sidebar-item {{ 'active' if request.endpoint == 'settings' }}">
+            <i class="fa-solid fa-gear"></i> Einstellungen
+        </a>
+
+        {% if current_user.role == 'admin' %}
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            <p
+                style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; padding: 0 1rem; margin-bottom: 0.5rem;">
+                Admin</p>
+            <a href="{{ url_for('admin_panel') }}"
+                class="sidebar-item {{ 'active' if request.endpoint == 'admin_panel' }}">
+                <i class="fa-solid fa-user-shield"></i> Admin Panel
+            </a>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            <a href="{{ url_for('logout') }}" class="sidebar-item" style="color: #ef4444;">
+                <i class="fa-solid fa-right-from-bracket"></i> Abmelden
+            </a>
+        </div>
+    </div>
+
+    <button class="sidebar-btn" id="sidebarToggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const toggle = document.getElementById('sidebarToggle');
+
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    </script>
+    {% endif %}
+
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<header class="flex items-center justify-between p-4 pt-8 w-full" style="z-index: 20;">
+    <div style="width: 48px;"></div>
+    <h2 style="font-size: 1.125rem; font-weight: 700;">Statistiken</h2>
+    <div style="width: 48px;"></div>
+</header>
+
+<main style="flex: 1; display: flex; flex-direction: column; padding: 1rem 1.5rem 2rem; overflow-y: auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div
+            style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary);">
+            <span class="material-symbols-outlined" style="font-size: 32px;">emoji_events</span>
+        </div>
+        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.5rem;">Leaderboard</h1>
+        <p style="color: var(--text-muted);">Wer führt das Familien-Bingo an?</p>
+    </div>
+
+    <div class="glass-panel" style="padding: 1rem;">
+        {% for user in users %}
+        <div
+            style="display: flex; align-items: center; justify-content: space-between; padding: 1.25rem; {{ 'border-bottom: 1px solid rgba(255,255,255,0.05);' if not loop.last }}">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div
+                    style="width: 36px; height: 36px; background: {{ 'rgba(242, 108, 13, 0.3)' if loop.index == 1 else 'rgba(255,255,255,0.05)' }}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: {{ 'var(--primary)' if loop.index == 1 else 'white' }};">
+                    {{ loop.index }}
+                </div>
+                <span style="font-size: 1.1rem; font-weight: 600;">{{ user.username }}</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                <span style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">{{ user.points }}</span>
+                <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Punkte</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

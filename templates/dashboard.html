@@ -160,33 +160,5 @@
     <p style="text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.2); margin-top: 1rem;">
         Du spielst als <span style="font-weight: 700; color: rgba(255,255,255,0.4);">{{ current_user.username }}</span>
     </p>
-
-    <!-- Password Change Section -->
-    <div class="glass-panel" style="padding: 1.5rem; margin-top: 2rem; text-align: left;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-            Passwort ändern</h3>
-        <form action="{{ url_for('change_password') }}" method="POST" style="display: flex; gap: 0.5rem;">
-            <input type="password" name="new_password" placeholder="Neues Passwort" required
-                style="padding: 0.75rem 1rem; flex: 1;">
-            <button type="submit" class="btn-secondary"
-                style="padding: 0.75rem 1.5rem; border-radius: 50px;">💾</button>
-        </form>
-    </div>
-
-    <!-- Global Leaderboard -->
-    <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
-        <h3
-            style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center; margin-bottom: 1rem;">
-            Bestenliste</h3>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            {% for user in leaderboard[:5] %}
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.25rem 1rem;">
-                <span style="opacity: 0.6;">{{ loop.index }}. {{ user.username }}</span>
-                <span style="font-weight: 700; color: var(--primary);">{{ user.points }} Pkt.</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
 </footer>
 {% endblock %}

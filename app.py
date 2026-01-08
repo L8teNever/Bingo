@@ -89,16 +89,24 @@ def dashboard():
         # Show all words if user submitted or if dinner has started
         all_words = WordLog.query.filter_by(date=today).all()
     
-    leaderboard = User.query.order_by(User.points.desc()).all()
-    
     return render_template('dashboard.html', 
                            user_word=user_word, 
                            all_words=all_words,
-                           leaderboard=leaderboard,
                            notify_time=notify_time,
                            dinner_time=dinner_time,
                            is_open=is_open,
                            is_dinner=is_dinner)
+
+@app.route('/leaderboard')
+@login_required
+def leaderboard():
+    users = User.query.order_by(User.points.desc()).all()
+    return render_template('leaderboard.html', users=users)
+
+@app.route('/settings')
+@login_required
+def settings():
+    return render_template('settings.html')
 
 @app.route('/submit_word', methods=['POST'])
 @login_required
