@@ -6,10 +6,14 @@ from datetime import datetime, timedelta
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'bingo-secret-key-123')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bingo.db'
+# Datenbank im 'instance' Ordner speichern für bessere Persistenz
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'bingo.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Sicherstellen, dass der instance-Ordner existiert
+os.makedirs(app.instance_path, exist_ok=True)
 
 db.init_app(app)
 login_manager = LoginManager()
