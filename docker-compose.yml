@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   bingo:
-    image: ${DOCKER_USERNAME:-yourusername}/bingo:latest
+    build: .
+    image: ${DOCKER_USERNAME:-l8tenever}/bingo:latest
     container_name: dinner_bingo
     ports:
       - "5000:5000"
