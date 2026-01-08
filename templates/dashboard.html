@@ -110,6 +110,25 @@
         </script>
     </div>
 
+    {% if user_word and all_words|length > 1 %}
+    <div class="glass-panel" style="padding: 1.25rem; margin-bottom: 2rem;">
+        <h3
+            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+            Andere Teilnehmer</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            {% for w in all_words %}
+            {% if w.user_id != current_user.id %}
+            <div
+                style="display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.5rem 0; {{ 'border-bottom: 1px solid rgba(255,255,255,0.05);' if not loop.last }}">
+                <span style="opacity: 0.7;">{{ w.user.username }}</span>
+                <span style="font-weight: 700; color: var(--primary);">{{ w.word }}</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <div style="margin-bottom: auto;"></div>
     {% else %}
     <!-- Waiting Phase -->
