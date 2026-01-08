@@ -1,17 +1,15 @@
 FROM python:3.11-slim
 
-# Arbeitsverzeichnis setzen
 WORKDIR /app
 
-# Abhängigkeiten kopieren und installieren
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Den Rest des Codes kopieren
+# Kopiere alle Dateien in das Continer-Verzeichnis
 COPY . .
 
-# Port für Flask öffnen
+# Installiere die Abhängigkeiten
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Port für Flask
 EXPOSE 5000
 
-# Start-Befehl
+# Starte die Anwendung über run.py (initialisiert die DB)
 CMD ["python", "run.py"]
