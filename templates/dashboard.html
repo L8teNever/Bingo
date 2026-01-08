@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Header -->
+<header class="flex items-center justify-between p-4 pt-8 w-full" style="z-index: 20;">
+    <a href="{{ url_for('logout') }}" class="flex items-center justify-center"
+        style="width: 48px; height: 48px; border-radius: 50%; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+        <span class="material-symbols-outlined" style="font-size: 28px;">logout</span>
+    </a>
+    <h2 style="font-size: 1.125rem; font-weight: 700;">Worteingabe</h2>
+    {% if current_user.role == 'admin' %}
+    <a href="{{ url_for('admin_panel') }}" class="flex items-center justify-center"
+        style="width: 48px; height: 48px; border-radius: 50%; color: var(--primary); text-decoration: none; display: flex; align-items: center; justify-content: center;">
+        <span class="material-symbols-outlined" style="font-size: 24px;">settings</span>
+    </a>
+    {% else %}
+    <div style="width: 48px;"></div>
+    {% endif %}
+</header>
+
+<main style="flex: 1; display: flex; flex-direction: column; padding: 1rem 1.5rem 2rem; overflow-y: auto;">
+
+    {% if is_dinner %}
+    <!-- Dinner / Voting Phase -->
+    <div style="text-align: center; padding-top: 1.5rem; margin-bottom: 2rem;">
+        <div
+            style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary);">
+            <span class="material-symbols-outlined" style="font-size: 32px;">restaurant</span>
+        </div>
+        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Das Essen läuft!</h1>
+        <p style="color: var(--text-muted); line-height: 1.625rem;">
+            Wer hat sein Wort heute schon gesagt? Gib ihnen einen Punkt!
+        </p>
+    </div>
+
+    {% if user_word %}
+    <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">Dein Wort heute:</p>
+        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">{{ user_word.word }}</div>
+    </div>
+    {% endif %}
+
+    <div class="glass-panel" style="padding: 1.25rem; margin-bottom: auto;">
+        <h3
+            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
+            Wer gewinnt heute?</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            {% for w in all_words %}
+            <div
+                style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="text-align: left;">
+                    <div style="font-weight: 700;">{{ w.user.username }}</div>
+                    <div style="color: var(--primary); font-size: 0.9rem;">"{{ w.word }}"</div>
+                </div>
+                <form action="{{ url_for('vote') }}" method="POST" style="margin: 0;">
+                    <input type="hidden" name="voted_user_id" value="{{ w.user_id }}">
+                    <button type="submit" class="btn-secondary"
+                        style="padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; cursor: pointer;">Punkt
+                        geben</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% elif is_open %}
+    <!-- Submission Phase (Match provided design) -->
+    <div style="text-align: center; padding-top: 1.5rem; margin-bottom: 2rem;">
+        <div
+            style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary); animation: pulse 2s infinite;">
+            <span class="material-symbols-outlined" style="font-size: 32px;">lightbulb</span>
+        </div>
+        <style>
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+
+                50% {
+                    transform: scale(1.05);
+                    opacity: 0.8;
+                }
+
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+        </style>
+        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Dein Bingo-Wort</h1>
+        <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
+            Wähle ein Wort, das Mama oder Papa heute beim Abendessen sicher sagen werden.
+        </p>
+    </div>
+
+    <div style="margin-bottom: 2rem; position: relative;">
+        <div
+            style="position: absolute; inset: -2px; background: linear-gradient(to right, var(--primary), #ff9f5e); border-radius: 2.1rem; opacity: 0.2; filter: blur(8px);">
+        </div>
+        <div class="glass-panel" style="position: relative; padding: 4px; background: var(--surface);">
+            <form id="word-form" action="{{ url_for('submit_word') }}" method="POST" style="margin: 0;">
+                <input type="text" name="word" id="bingo-word" placeholder="Was wird heute gesagt?"
+                    value="{{ user_word.word if user_word else '' }}"
+                    style="width: 100%; background: transparent; border: none; text-align: center; font-size: 1.25rem; font-weight: 600; height: 80px; padding: 0 1rem; color: white; outline: none;"
+                    autocomplete="off">
+            </form>
+            <div style="height: 4px; width: 80px; background: rgba(242, 108, 13, 0.2); border-radius: 50px; margin: -10px auto 12px; transition: all 0.3s;"
+                id="input-decorator"></div>
+        </div>
+        <script>
+            const input = document.getElementById('bingo-word');
+            const decorator = document.getElementById('input-decorator');
+            input.addEventListener('focus', () => {
+                decorator.style.backgroundColor = 'var(--primary)';
+                decorator.style.width = '160px';
+            });
+            input.addEventListener('blur', () => {
+                decorator.style.backgroundColor = 'rgba(242, 108, 13, 0.2)';
+                decorator.style.width = '80px';
+            });
+        </script>
+    </div>
+
+    <div style="margin-bottom: auto;"></div>
+    {% else %}
+    <!-- Waiting Phase -->
+    <div style="text-align: center; padding-top: 3rem; margin-bottom: 2rem;">
+        <div
+            style="width: 64px; height: 64px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--text-muted);">
+            <span class="material-symbols-outlined" style="font-size: 32px;">bedtime</span>
+        </div>
+        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Noch etwas Geduld...</h1>
+        <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
+            Die Wort-Eingabe startet heute um {{ notify_time }} Uhr.
+        </p>
+    </div>
+    {% endif %}
+</main>
+
+<!-- Footer -->
+<footer
+    style="padding: 1rem 1.5rem 2rem; z-index: 10; background: linear-gradient(to top, var(--bg) 80%, transparent);">
+    {% if is_open %}
+    <button type="button" onclick="document.getElementById('word-form').submit()" class="btn"
+        style="width: 100%; height: 56px;">
+        <span style="font-size: 1rem; font-weight: 700; letter-spacing: 0.025em; margin-right: 0.5rem;">Wort
+            Einreichen</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+    </button>
+    {% if user_word %}
+    <form action="{{ url_for('withdraw_word') }}" method="POST" style="margin-top: 0.5rem;">
+        <button type="submit"
+            style="width: 100%; background: transparent; border: none; color: #ef4444; font-size: 0.8rem; cursor: pointer; opacity: 0.6;">Wort
+            zurückziehen</button>
+    </form>
+    {% endif %}
+    {% endif %}
+
+    <p style="text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.2); margin-top: 1rem;">
+        Du spielst als <span style="font-weight: 700; color: rgba(255,255,255,0.4);">{{ current_user.username }}</span>
+    </p>
+
+    <!-- Global Leaderboard (Always visible as a small link or section) -->
+    <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+        <h3
+            style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center; margin-bottom: 1rem;">
+            Bestenliste</h3>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            {% for user in leaderboard[:5] %}
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.25rem 1rem;">
+                <span style="opacity: 0.6;">{{ loop.index }}. {{ user.username }}</span>
+                <span style="font-weight: 700; color: var(--primary);">{{ user.points }} Pkt.</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</footer>
+{% endblock %}
