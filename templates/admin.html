@@ -20,7 +20,7 @@
             </div>
             <div style="text-align: left;">
                 <label
-                    style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Essen/Lock
+                    style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block;">Abstimmung/Lock
                     (HH:MM)</label>
                 <input type="text" name="dinner_time" value="{{ settings.dinner_time }}" required>
             </div>
@@ -40,22 +40,7 @@
         </form>
     </div>
 
-    <div class="glass-panel" style="padding: 1.5rem;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem;">
-            Neuer Benutzer</h3>
-        <form method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
-            <input type="text" name="new_username" placeholder="Benutzername" required>
-            <input type="password" name="new_password" placeholder="Passwort" required>
-            <select name="role"
-                style="width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.05); background: var(--surface-input); color: white; outline: none;">
-                <option value="player">Spieler</option>
-                <option value="admin">Admin</option>
-            </select>
-            <button type="submit" name="create_user" class="btn btn-secondary"
-                style="width: 100%; margin-top: 0.5rem;">Benutzer Erstellen</button>
-        </form>
-    </div>
+
 
     <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
         <h3

@@ -9,15 +9,15 @@
 <main style="flex: 1; display: flex; flex-direction: column; padding: 1rem 1.5rem 2rem; overflow-y: auto;">
 
     {% if is_dinner %}
-    <!-- Dinner / Voting Phase -->
+    <!-- Voting Phase -->
     <div style="text-align: center; padding-top: 1.5rem; margin-bottom: 2rem;">
         <div
             style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary);">
-            <span class="material-symbols-outlined" style="font-size: 32px;">restaurant</span>
+            <span class="material-symbols-outlined" style="font-size: 32px;">how_to_vote</span>
         </div>
-        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Das Essen läuft!</h1>
+        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Abstimmung läuft!</h1>
         <p style="color: var(--text-muted); line-height: 1.625rem;">
-            Wer hat sein Wort heute schon gesagt? Gib ihnen einen Punkt!
+            Welches Wort wurde bereits erwähnt? Vergib Punkte!
         </p>
     </div>
 
@@ -78,7 +78,7 @@
         </style>
         <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Dein Bingo-Wort</h1>
         <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
-            Wähle ein Wort, das Mama oder Papa heute beim Abendessen sicher sagen werden.
+            Wähle ein Wort, das heute am Tisch sicher erwähnt wird.
         </p>
     </div>
 
@@ -110,7 +110,7 @@
         </script>
     </div>
 
-    {% if user_word and all_words|length > 1 %}
+    {% if user_word and all_words|length >= 1 %}
     <div class="glass-panel" style="padding: 1.25rem; margin-bottom: 2rem;">
         <h3
             style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
@@ -125,6 +125,10 @@
             </div>
             {% endif %}
             {% endfor %}
+            {% if all_words|length == 1 %}
+            <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 1rem 0; opacity: 0.6;">
+                Du bist der Erste! Warte auf andere Teilnehmer...</p>
+            {% endif %}
         </div>
     </div>
     {% endif %}
@@ -139,7 +143,7 @@
         </div>
         <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Noch etwas Geduld...</h1>
         <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
-            Die Wort-Eingabe startet heute um {{ notify_time }} Uhr.
+            Die Worteingabe startet um {{ notify_time }} Uhr.
         </p>
     </div>
     {% endif %}
@@ -149,16 +153,22 @@
 <footer
     style="padding: 1rem 1.5rem 2rem; z-index: 10; background: linear-gradient(to top, var(--bg) 80%, transparent);">
     {% if is_open %}
+    {% if not user_word %}
+    <!-- Einreich-Button nur wenn noch kein Wort eingegeben -->
     <button type="button" onclick="document.getElementById('word-form').submit()" class="btn"
         style="width: 100%; height: 56px;">
         <span style="font-size: 1rem; font-weight: 700; letter-spacing: 0.025em; margin-right: 0.5rem;">Wort
             Einreichen</span>
         <span class="material-symbols-outlined">arrow_forward</span>
     </button>
-    {% if user_word %}
-    <form action="{{ url_for('withdraw_word') }}" method="POST" style="margin-top: 0.5rem;">
-        <button type="submit"
-            style="width: 100%; background: transparent; border: none; color: #ef4444; font-size: 0.8rem; cursor: pointer; opacity: 0.6;">Wort
+    {% else %}
+    <!-- Wenn Wort bereits eingegeben, zeige nur Zurückziehen-Option -->
+    <div style="text-align: center; margin-bottom: 1rem;">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">✓ Wort eingereicht</p>
+    </div>
+    <form action="{{ url_for('withdraw_word') }}" method="POST">
+        <button type="submit" class="btn-secondary"
+            style="width: 100%; padding: 0.75rem; border-radius: 50px; font-size: 0.9rem; cursor: pointer; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #ef4444;">Wort
             zurückziehen</button>
     </form>
     {% endif %}

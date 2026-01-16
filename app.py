@@ -53,6 +53,7 @@ def create_app():
         try:
             db.create_all()
             init_default_data()
+            create_users_from_env()  # Benutzer aus Umgebungsvariable erstellen
             logger.info("Datenbank erfolgreich initialisiert")
         except Exception as e:
             logger.error(f"Fehler bei der Datenbankinitialisierung: {e}")
@@ -102,6 +103,70 @@ def init_default_data():
     except Exception as e:
         db.session.rollback()
         logger.error(f"Fehler beim Initialisieren der Standarddaten: {e}")
+        raise
+
+def create_users_from_env():
+    """Erstellt Benutzer aus USERS Umgebungsvariable
+    
+    Format: username:password:role,username:password:role,...
+    Beispiel: USERS=max:geheim123:player,anna:test456:player,admin:admin123:admin
+    """
+    users_env = os.environ.get('USERS', '')
+    if not users_env:
+        logger.info("Keine USERS Umgebungsvariable gefunden, überspringe Benutzererstellung")
+        return
+    
+    try:
+        user_definitions = users_env.split(',')
+        created_count = 0
+        updated_count = 0
+        
+        for user_def in user_definitions:
+            user_def = user_def.strip()
+            if not user_def:
+                continue
+            
+            parts = user_def.split(':')
+            if len(parts) != 3:
+                logger.warning(f"Ungültiges Benutzerformat: {user_def} (erwartet: username:password:role)")
+                continue
+            
+            username, password, role = parts
+            username = username.strip()
+            password = password.strip()
+            role = role.strip()
+            
+            if role not in ['player', 'admin']:
+                logger.warning(f"Ungültige Rolle für {username}: {role} (erwartet: player oder admin)")
+                continue
+            
+            # Prüfen ob Benutzer existiert
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                # Benutzer existiert - Passwort und Rolle aktualisieren
+                existing_user.password_hash = generate_password_hash(password)
+                existing_user.role = role
+                updated_count += 1
+                logger.info(f"Benutzer aktualisiert: {username} (Rolle: {role})")
+            else:
+                # Neuen Benutzer erstellen
+                new_user = User(
+                    username=username,
+                    password_hash=generate_password_hash(password),
+                    role=role
+                )
+                db.session.add(new_user)
+                created_count += 1
+                logger.info(f"Neuer Benutzer erstellt: {username} (Rolle: {role})")
+        
+        db.session.commit()
+        
+        if created_count > 0 or updated_count > 0:
+            logger.info(f"Benutzerverwaltung abgeschlossen: {created_count} erstellt, {updated_count} aktualisiert")
+    
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Fehler beim Erstellen von Benutzern aus Umgebungsvariable: {e}")
         raise
 
 def register_routes(app):
@@ -229,11 +294,11 @@ def register_routes(app):
             dinner_time = Setting.query.filter_by(key='dinner_time').first().value
             
             if now_time < notify_time:
-                flash(f'Die Eingabe startet erst um {notify_time} Uhr.')
+                flash('Die Eingabe startet erst um {notify_time} Uhr.')
                 return redirect(url_for('dashboard'))
                 
             if now_time >= dinner_time:
-                flash('Das Essen hat bereits begonnen. Keine Änderungen mehr möglich.')
+                flash('Die Abstimmungsphase hat bereits begonnen. Keine Änderungen mehr möglich.')
                 return redirect(url_for('dashboard'))
             
             # Check cooldown
@@ -283,7 +348,7 @@ def register_routes(app):
             dinner_time = Setting.query.filter_by(key='dinner_time').first().value
             
             if now_time >= dinner_time:
-                flash('Das Essen hat bereits begonnen. Zurückziehen nicht mehr möglich.')
+                flash('Die Abstimmungsphase hat bereits begonnen. Zurückziehen nicht mehr möglich.')
                 return redirect(url_for('dashboard'))
             
             deleted_count = WordLog.query.filter_by(user_id=current_user.id, date=today).delete()
@@ -376,27 +441,7 @@ def register_routes(app):
         
         try:
             if request.method == 'POST':
-                if 'create_user' in request.form:
-                    username = request.form.get('new_username', '').strip()
-                    password = request.form.get('new_password', '')
-                    role = request.form.get('role', 'player')
-                    
-                    if not username or not password:
-                        flash('Benutzername und Passwort erforderlich')
-                    elif User.query.filter_by(username=username).first():
-                        flash('Benutzer existiert bereits')
-                    else:
-                        new_user = User(
-                            username=username, 
-                            password_hash=generate_password_hash(password), 
-                            role=role
-                        )
-                        db.session.add(new_user)
-                        db.session.commit()
-                        logger.info(f"Neuer Benutzer erstellt: {username}")
-                        flash('Benutzer erstellt')
-                
-                elif 'update_settings' in request.form:
+                if 'update_settings' in request.form:
                     for key in ['notify_time', 'dinner_time', 'cooldown_days', 'max_changes']:
                         setting = Setting.query.filter_by(key=key).first()
                         if setting:

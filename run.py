@@ -12,7 +12,7 @@ if __name__ == '__main__':
     try:
         app = create_app()
         logger.info("=" * 50)
-        logger.info("Dinner Bingo Server gestartet!")
+        logger.info("Wort Bingo Server gestartet!")
         logger.info("Admin-Login: admin / admin123")
         logger.info("=" * 50)
         app.run(debug=True, host='0.0.0.0', port=5000)

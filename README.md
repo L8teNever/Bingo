@@ -1,22 +1,24 @@
-# Dinner Bingo 🎲🍽️
+# Wort Bingo 🎲
 
-Eine interaktive Flask-Webanwendung für ein unterhaltsames Familien-Bingo-Spiel beim Abendessen.
+Eine interaktive Flask-Webanwendung für ein unterhaltsames Wort-Ratespiel.
 
 ## 📋 Beschreibung
 
-Dinner Bingo ist ein Spiel, bei dem Teilnehmer täglich ein Wort auswählen, von dem sie glauben, dass es beim Abendessen gesagt wird. Wenn das Wort fällt, erhält der Spieler Punkte!
+Wort Bingo ist ein Spiel, bei dem Teilnehmer täglich ein Wort auswählen, von dem sie glauben, dass es am Tisch erwähnt wird. Wenn das Wort fällt, erhält der Spieler Punkte!
 
 ### Features
 
 - 🔐 **Benutzer-Authentifizierung** mit Admin- und Spieler-Rollen
 - 📝 **Tägliche Worteingabe** mit konfigurierbaren Zeitfenstern
 - 🏆 **Punktesystem** und Bestenliste
-- ⏰ **Zeitbasierte Phasen**: Eingabe → Essen → Abstimmung
+- ⏰ **Zeitbasierte Phasen**: Eingabe → Abstimmung
 - 🚫 **Cooldown-System** für bereits verwendete Wörter
 - ✏️ **Wortänderungen** mit konfigurierbarem Limit
-- 👨‍💼 **Admin-Panel** für Benutzerverwaltung und Einstellungen
+- 👨‍💼 **Admin-Panel** für Einstellungen und Punkteverwaltung
 - 🐳 **Docker-Support** mit Datenpersistenz
 - 📱 **Responsive Design** mit modernem UI
+- ✨ **Smarte UI**: Einreich-Button verschwindet nach Eingabe, zeigt andere Teilnehmer automatisch
+- 🔒 **Sichere Benutzerverwaltung**: Benutzer nur über Skript/CLI erstellbar
 
 ## 🚀 Schnellstart
 
@@ -63,12 +65,44 @@ DATABASE_URL=sqlite:///instance/bingo.db  # Optional
 
 Nach dem Login als Admin können folgende Einstellungen angepasst werden:
 
-- **Benachrichtigungszeit** (`notify_time`): Wann die Worteingabe startet (z.B. `12:00`)
-- **Essenszeit** (`dinner_time`): Wann das Essen beginnt (z.B. `18:00`)
+- **Startzeit** (`notify_time`): Wann die Worteingabe startet (z.B. `12:00`)
+- **Abstimmungszeit** (`dinner_time`): Wann die Abstimmungsphase beginnt (z.B. `18:00`)
 - **Cooldown-Tage** (`cooldown_days`): Wie lange ein Wort gesperrt bleibt (z.B. `14`)
 - **Max. Änderungen** (`max_changes`): Wie oft ein Wort pro Tag geändert werden kann (z.B. `3`)
 
-## 👤 Standard-Login
+## 👤 Benutzerverwaltung
+
+### Methode 1: Über docker-compose (Empfohlen)
+
+Benutzer werden automatisch beim Container-Start erstellt. Bearbeite die `docker-compose.yml`:
+
+```yaml
+environment:
+  - USERS=admin:admin123:admin,max:geheim123:player,anna:test456:player
+```
+
+**Format:** `username:password:role,username:password:role,...`
+
+**Rollen:** `player` oder `admin`
+
+**Vorteile:**
+- ✅ Automatisch beim Start
+- ✅ Einfach neue Benutzer hinzufügen
+- ✅ Passwörter werden bei jedem Start aktualisiert
+- ✅ Versionskontrolle möglich
+
+### Methode 2: Über Skript (Alternativ)
+
+Für manuelle Benutzerverwaltung:
+
+```bash
+# Lokal
+python create_user.py max geheim123 player
+python create_user.py --list
+
+# Im Docker-Container
+docker exec -it dinner_bingo python create_user.py max geheim123 player
+```
 
 ```
 Benutzername: admin
@@ -136,9 +170,9 @@ Bingo/
 
 ## 🎮 Spielablauf
 
-1. **Vor der Benachrichtigungszeit**: Warten-Phase
-2. **Benachrichtigungszeit bis Essenszeit**: Spieler können Wörter einreichen/ändern
-3. **Ab Essenszeit**: Abstimmungsphase - Punkte vergeben für gesagte Wörter
+1. **Vor der Startzeit**: Warten-Phase
+2. **Startzeit bis Abstimmungszeit**: Spieler können Wörter einreichen/ändern
+3. **Ab Abstimmungszeit**: Abstimmungsphase - Punkte vergeben für erwähnte Wörter
 
 ## 🔒 Sicherheit
 
