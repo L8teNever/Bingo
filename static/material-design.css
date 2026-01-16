@@ -136,6 +136,18 @@ p {
 
 /* Material Symbols */
 .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     vertical-align: middle;
 }
@@ -153,16 +165,18 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--md-glass-bg);
-    backdrop-filter: blur(var(--md-blur));
-    -webkit-backdrop-filter: blur(var(--md-blur));
-    border-bottom: 1px solid var(--md-glass-border);
+    padding: 12px 20px;
+    background: rgba(255, 251, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    height: 64px;
 }
 
 .md-top-app-bar-title {
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--md-on-surface);
 }
 
 /* Cards - Android 16 Style */
@@ -170,7 +184,7 @@ p {
     background: var(--md-surface-container);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
-    border: 1px solid transparent;
+    border: none;
     transition: var(--transition-smooth);
 }
 
@@ -190,7 +204,7 @@ p {
 
 .md-card-outlined {
     background: transparent;
-    border: 1.5px solid var(--md-outline-variant);
+    border: 1px solid var(--md-outline-variant);
 }
 
 /* Buttons */
@@ -199,28 +213,28 @@ p {
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
-    padding: 12px 28px;
+    padding: 12px 24px;
     height: 52px;
-    border-radius: var(--radius-md);
+    border-radius: 16px;
     border: none;
     font-family: var(--font-family);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition-smooth);
-    text-decoration: none;
+    text-decoration: none !important;
     overflow: hidden;
     position: relative;
 }
 
 .md-button:active {
-    transform: scale(0.96);
+    transform: scale(0.97);
 }
 
 .md-button-filled {
     background: var(--md-primary);
     color: var(--md-on-primary);
-    box-shadow: var(--md-shadow-2);
+    box-shadow: 0 4px 12px rgba(103, 80, 164, 0.25);
 }
 
 .md-button-tonal {
@@ -231,7 +245,7 @@ p {
 .md-button-outlined {
     background: transparent;
     color: var(--md-primary);
-    border: 1.5px solid var(--md-primary);
+    border: 2px solid var(--md-primary);
 }
 
 .md-button-text {
@@ -480,57 +494,70 @@ p {
     font-weight: 700;
 }
 
-/* Bottom Navigation */
+/* Bottom Navigation - FORCED AT BOTTOM */
 .md-bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 500px;
-    background: var(--md-glass-bg);
-    backdrop-filter: blur(var(--md-blur));
-    -webkit-backdrop-filter: blur(var(--md-blur));
-    display: flex;
-    justify-content: space-around;
-    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--md-glass-border);
-    z-index: 200;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    background: rgba(255, 251, 255, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03) !important;
 }
 
 .md-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: var(--md-on-surface-variant);
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 500;
-    transition: var(--transition-smooth);
-    width: 25%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: var(--md-on-surface-variant) !important;
+    text-decoration: none !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    flex: 1 !important;
 }
 
 .md-nav-item i {
-    padding: 4px 20px;
-    border-radius: var(--radius-full);
+    padding: 4px 20px !important;
+    border-radius: 20px !important;
+    font-family: 'Material Symbols Rounded' !important;
+    font-style: normal !important;
 }
 
 .md-nav-item.active {
-    color: var(--md-on-surface);
+    color: var(--md-primary) !important;
 }
 
 .md-nav-item.active i {
-    background: var(--md-secondary-container);
-    color: var(--md-on-secondary-container);
+    background: var(--md-primary-container) !important;
+    color: var(--md-on-primary-container) !important;
 }
 
-/* Content Area */
+/* Typography & Layout Spacing */
 main {
-    flex: 1;
-    padding: var(--spacing-lg);
-    padding-bottom: 100px;
-    /* Space for bottom nav */
+    padding: 20px 20px 100px 20px !important;
+    /* Extra padding at bottom for nav */
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+p {
+    line-height: 1.6;
 }
 
 /* Animations */
@@ -561,7 +588,7 @@ main {
 }
 
 .animate-in {
-    animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-slide-in {
