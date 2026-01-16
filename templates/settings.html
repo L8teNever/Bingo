@@ -1,66 +1,66 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<!-- Top App Bar -->
+<!-- Header Bar -->
 <header class="md-top-app-bar">
-    <button class="md-icon-button" onclick="toggleDrawer()">
-        <span class="material-symbols-rounded">menu</span>
-    </button>
-    <div class="md-top-app-bar-title">Einstellungen</div>
-    <div style="width: 48px;"></div>
+    <div style="flex: 1;"></div>
+    <div class="md-top-app-bar-title">Profil</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <span class="material-symbols-rounded" style="color: var(--md-primary);">person</span>
+    </div>
 </header>
 
-<main style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto;">
-
+<main>
     <!-- Header Section -->
-    <div class="animate-in" style="text-align: center; margin-bottom: var(--spacing-xl);">
+    <div class="animate-in" style="margin-bottom: var(--spacing-xl); text-align: center;">
         <div
-            style="width: 80px; height: 80px; background: var(--md-secondary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
+            style="width: 80px; height: 80px; background: var(--md-secondary-container); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: var(--md-shadow-3);">
             <span class="material-symbols-rounded"
-                style="font-size: 40px; color: var(--md-on-secondary-container);">settings</span>
+                style="font-size: 40px; color: var(--md-on-secondary-container);">account_circle</span>
         </div>
-        <h1 style="margin-bottom: var(--spacing-sm);">Dein Profil</h1>
-        <p class="text-secondary" style="font-size: 16px;">Verwalte dein Konto und Einstellungen</p>
+        <h1>{{ current_user.username }}</h1>
+        <p class="text-secondary">Verwalte dein Konto</p>
     </div>
 
-    <!-- Change Password Card -->
-    <div class="md-card-elevated animate-in" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Passwort ändern</h3>
+    <!-- Password Change -->
+    <div class="md-card-elevated animate-in mb-md" style="padding: 24px;">
+        <h3 class="mb-md" style="font-size: 0.75rem;">Sicherheit</h3>
         <form action="{{ url_for('change_password') }}" method="POST">
-            <div class="md-input-container">
-                <label class="md-label">Neues Passwort</label>
+            <div class="mb-md">
                 <div style="position: relative;">
                     <span class="material-symbols-rounded"
-                        style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">lock</span>
-                    <input type="password" name="new_password" class="md-input"
-                        placeholder="Gib dein neues Passwort ein" required style="padding-left: 48px;">
+                        style="position: absolute; left: 16px; top: 16px; color: var(--md-primary);">lock_reset</span>
+                    <input type="password" name="new_password" class="md-input-filled" placeholder="Neues Passwort"
+                        required style="padding-left: 52px; height: 56px;">
                 </div>
             </div>
-            <button type="submit" class="md-button md-button-filled w-full" style="height: 48px;">
-                <span class="material-symbols-rounded">save</span>
-                <span>Passwort speichern</span>
+            <button type="submit" class="md-button md-button-filled w-full">
+                <span class="material-symbols-rounded">check</span>
+                <span>Passwort aktualisieren</span>
             </button>
         </form>
     </div>
 
-    <!-- Account Info Card -->
-    <div class="md-card animate-in" style="padding: var(--spacing-xl);">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Konto</h3>
-        <div class="md-card-filled"
-            style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-md);">
+    <!-- Account Details -->
+    <div class="md-card-outlined animate-in" style="padding: 24px;">
+        <h3 class="mb-md" style="font-size: 0.75rem;">Account Info</h3>
+        <div
+            style="display: flex; align-items: center; gap: 16px; padding: 12px; background: var(--md-surface-container-high); border-radius: 16px; margin-bottom: 24px;">
             <div
-                style="width: 48px; height: 48px; background: var(--md-primary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-rounded" style="color: var(--md-on-primary-container);">person</span>
+                style="width: 44px; height: 44px; background: var(--md-primary-container); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-rounded" style="color: var(--md-on-primary-container);">id_card</span>
             </div>
             <div>
-                <div class="md-label" style="margin-bottom: 4px;">Angemeldet als</div>
-                <div style="font-size: 18px; font-weight: 500;">{{ current_user.username }}</div>
+                <div class="text-secondary" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">
+                    Benutzername</div>
+                <div style="font-weight: 700; font-size: 1.1rem;">{{ current_user.username }}</div>
             </div>
         </div>
-        <a href="{{ url_for('logout') }}" class="md-button md-button-outlined md-button-error w-full"
-            style="height: 48px; border-color: var(--md-error); color: var(--md-error);">
+
+        <a href="{{ url_for('logout') }}" class="md-button-text w-full"
+            style="color: var(--md-error); display: flex; align-items: center; justify-content: center; gap: 8px;">
             <span class="material-symbols-rounded">logout</span>
-            <span>Abmelden</span>
+            <span class="font-bold">Abmelden</span>
         </a>
     </div>
 </main>

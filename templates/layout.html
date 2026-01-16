@@ -11,14 +11,11 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Material Symbols -->
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         rel="stylesheet">
 
     <!-- Material Design CSS -->
@@ -27,76 +24,54 @@
 
 <body>
     {% if current_user.is_authenticated %}
-    <!-- Scrim (Overlay) -->
-    <div class="md-scrim" id="scrim"></div>
-
-    <!-- Navigation Drawer -->
-    <div class="md-drawer" id="drawer">
-        <div class="md-drawer-header">
-            <h2>Wort Bingo</h2>
-            <p class="text-secondary" style="font-size: 14px; margin-top: 4px;">{{ current_user.username }}</p>
-        </div>
-
-        <a href="{{ url_for('dashboard') }}" class="md-drawer-item {{ 'active' if request.endpoint == 'dashboard' }}">
-            <span class="material-symbols-rounded">home</span>
-            Dashboard
+    <!-- Bottom Navigation (Mobile First) -->
+    <nav class="md-bottom-nav">
+        <a href="{{ url_for('dashboard') }}" class="md-nav-item {{ 'active' if request.endpoint == 'dashboard' }}">
+            <i class="material-symbols-rounded">home</i>
+            <span>Home</span>
         </a>
-        <a href="{{ url_for('leaderboard') }}"
-            class="md-drawer-item {{ 'active' if request.endpoint == 'leaderboard' }}">
-            <span class="material-symbols-rounded">leaderboard</span>
-            Bestenliste
+        <a href="{{ url_for('leaderboard') }}" class="md-nav-item {{ 'active' if request.endpoint == 'leaderboard' }}">
+            <i class="material-symbols-rounded">leaderboard</i>
+            <span>Ranking</span>
         </a>
-        <a href="{{ url_for('settings') }}" class="md-drawer-item {{ 'active' if request.endpoint == 'settings' }}">
-            <span class="material-symbols-rounded">settings</span>
-            Einstellungen
+        <a href="{{ url_for('settings') }}" class="md-nav-item {{ 'active' if request.endpoint == 'settings' }}">
+            <i class="material-symbols-rounded">settings</i>
+            <span>Profil</span>
         </a>
-
         {% if current_user.role == 'admin' %}
-        <div class="md-divider"></div>
-        <a href="{{ url_for('admin_panel') }}"
-            class="md-drawer-item {{ 'active' if request.endpoint == 'admin_panel' }}">
-            <span class="material-symbols-rounded">admin_panel_settings</span>
-            Admin
+        <a href="{{ url_for('admin_panel') }}" class="md-nav-item {{ 'active' if request.endpoint == 'admin_panel' }}">
+            <i class="material-symbols-rounded">admin_panel_settings</i>
+            <span>Admin</span>
         </a>
         {% endif %}
-
-        <div style="margin-top: auto;">
-            <div class="md-divider"></div>
-            <a href="{{ url_for('logout') }}" class="md-drawer-item text-error">
-                <span class="material-symbols-rounded">logout</span>
-                Abmelden
-            </a>
-        </div>
-    </div>
-
-    <script>
-        const drawer = document.getElementById('drawer');
-        const scrim = document.getElementById('scrim');
-
-        function toggleDrawer() {
-            drawer.classList.toggle('active');
-            scrim.classList.toggle('active');
-        }
-
-        if (scrim) {
-            scrim.addEventListener('click', toggleDrawer);
-        }
-    </script>
+    </nav>
     {% endif %}
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Flash Messages -->
+        <!-- Flash Messages Overlay -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <div style="padding: var(--spacing-md);">
+        <div id="flash-container"
+            style="position: fixed; top: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; z-index: 1000; display: flex; flex-direction: column; gap: 8px;">
             {% for message in messages %}
-            <div class="md-card animate-in"
-                style="background: var(--md-error-container); color: var(--md-error); margin-bottom: var(--spacing-sm);">
-                {{ message }}
+            <div class="md-card-elevated animate-in flash-message"
+                style="background: var(--md-error-container); color: var(--md-on-error-container); padding: 16px 20px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 12px; box-shadow: var(--md-shadow-4); border: 1px solid var(--md-glass-border);">
+                <span class="material-symbols-rounded">error</span>
+                <span style="font-size: 14px; font-weight: 600;">{{ message }}</span>
             </div>
             {% endfor %}
         </div>
+        <script>
+            setTimeout(() => {
+                const container = document.getElementById('flash-container');
+                if (container) {
+                    container.style.transition = 'opacity 0.5s ease';
+                    container.style.opacity = '0';
+                    setTimeout(() => container.remove(), 500);
+                }
+            }, 4000);
+        </script>
         {% endif %}
         {% endwith %}
 

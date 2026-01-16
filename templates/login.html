@@ -1,68 +1,60 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-xl);">
-    <div class="animate-in" style="max-width: 400px; width: 100%; text-align: center;">
+<div
+    style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(180deg, var(--md-surface-container-low), var(--md-surface));">
+    <div class="animate-in" style="width: 100%; max-width: 420px; text-align: center;">
 
-        <!-- Logo Icon -->
-        <div
-            style="width: 80px; height: 80px; background: var(--md-primary-container); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-xl); box-shadow: var(--md-shadow-2);">
-            <span class="material-symbols-rounded"
-                style="font-size: 48px; color: var(--md-on-primary-container);">casino</span>
+        <!-- App Identity -->
+        <div style="margin-bottom: 40px;">
+            <div class="ripple-active"
+                style="width: 96px; height: 96px; background: var(--md-primary); color: var(--md-on-primary); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: var(--md-shadow-4);">
+                <span class="material-symbols-rounded" style="font-size: 56px;">casino</span>
+            </div>
+            <h1 style="font-size: 2.5rem; margin-bottom: 8px;">Wort Bingo</h1>
+            <p class="text-secondary" style="font-size: 1.1rem; font-weight: 500;">Was wird heute gesagt?</p>
         </div>
 
-        <!-- Title -->
-        <h1 style="margin-bottom: var(--spacing-sm);">Wort Bingo</h1>
-        <p class="text-secondary" style="font-size: 16px; margin-bottom: var(--spacing-2xl);">
-            Das Ratespiel
-        </p>
-
         <!-- Login Card -->
-        <div class="md-card-elevated" style="padding: var(--spacing-xl); text-align: left;">
-            <h2 style="margin-bottom: var(--spacing-sm); font-size: 24px;">Willkommen zurück!</h2>
-            <p class="text-secondary" style="margin-bottom: var(--spacing-xl);">
-                Bitte melde dich an, um mitzuspielen.
-            </p>
+        <div class="md-card-elevated"
+            style="padding: 32px; text-align: left; background: var(--md-surface-container-highest); border: 1px solid var(--md-glass-border);">
+            <h2 style="font-weight: 700; margin-bottom: 8px;">Willkommen</h2>
+            <p class="text-secondary" style="margin-bottom: 24px;">Melde dich an, um mitzuspielen.</p>
 
             <form method="POST">
-                <!-- Username Input -->
-                <div class="md-input-container">
-                    <label class="md-label">Benutzername</label>
+                <div class="mb-md">
+                    <label class="text-secondary"
+                        style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">BENUTZERNAME</label>
                     <div style="position: relative;">
                         <span class="material-symbols-rounded"
-                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">person</span>
-                        <input type="text" name="username" class="md-input" placeholder="Dein Benutzername" required
-                            autofocus style="padding-left: 48px;">
+                            style="position: absolute; left: 16px; top: 16px; color: var(--md-primary);">person</span>
+                        <input type="text" name="username" class="md-input-filled" placeholder="Benutzername" required
+                            autofocus style="padding-left: 52px; height: 56px;">
                     </div>
                 </div>
 
-                <!-- Password Input -->
-                <div class="md-input-container">
-                    <label class="md-label">Passwort</label>
+                <div class="mb-md" style="margin-bottom: 32px;">
+                    <label class="text-secondary"
+                        style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">PASSWORT</label>
                     <div style="position: relative;">
                         <span class="material-symbols-rounded"
-                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">lock</span>
-                        <input type="password" name="password" class="md-input" placeholder="Dein Passwort" required
-                            style="padding-left: 48px;">
+                            style="position: absolute; left: 16px; top: 16px; color: var(--md-primary);">lock</span>
+                        <input type="password" name="password" class="md-input-filled" placeholder="Passwort" required
+                            style="padding-left: 52px; height: 56px;">
                     </div>
                 </div>
 
-                <!-- Login Button -->
                 <button type="submit" class="md-button md-button-filled w-full"
-                    style="height: 48px; font-size: 16px; margin-top: var(--spacing-md);">
+                    style="height: 64px; border-radius: 20px; font-size: 1.1rem;">
                     <span>Anmelden</span>
-                    <span class="material-symbols-rounded">arrow_forward</span>
+                    <span class="material-symbols-rounded">login</span>
                 </button>
             </form>
         </div>
 
-        <!-- Footer Info -->
-        <div style="margin-top: var(--spacing-xl);">
-            <div class="md-divider" style="opacity: 0.3;"></div>
-            <p class="text-secondary" style="margin-top: var(--spacing-lg); font-size: 14px;">
-                Kein Account? Frag den Admin!
-            </p>
-        </div>
+        <p class="text-secondary mt-lg" style="font-size: 0.9rem;">
+            Noch kein Konto? <span class="text-primary font-bold">Frag den Administrator.</span>
+        </p>
     </div>
 </div>
 {% endblock %}

@@ -10,6 +10,11 @@ ENV/
 *.egg-info/
 .eggs/
 
+# Environment files (sensitive data)
+.env
+.env.*
+!.env.example
+
 # IDEs
 .vscode/
 .idea/

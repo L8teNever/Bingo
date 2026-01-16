@@ -1,84 +1,98 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<!-- Top App Bar -->
+<!-- Header Bar -->
 <header class="md-top-app-bar">
-    <button class="md-icon-button" onclick="toggleDrawer()">
-        <span class="material-symbols-rounded">menu</span>
-    </button>
-    <div class="md-top-app-bar-title">Admin Bereich</div>
-    <div style="width: 48px;"></div>
+    <div style="flex: 1;"></div>
+    <div class="md-top-app-bar-title">Verwaltung</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <span class="material-symbols-rounded" style="color: var(--md-primary);">admin_panel_settings</span>
+    </div>
 </header>
 
-<main
-    style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto; gap: var(--spacing-lg);">
+<main>
+    <!-- Header Section -->
+    <div class="animate-in" style="margin-bottom: var(--spacing-xl); text-align: center;">
+        <div
+            style="width: 80px; height: 80px; background: var(--md-primary-container); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: var(--md-shadow-3);">
+            <span class="material-symbols-rounded"
+                style="font-size: 40px; color: var(--md-on-primary-container);">settings_suggest</span>
+        </div>
+        <h1>Admin Panel</h1>
+        <p class="text-secondary">Spielregeln & Benutzerkontrolle</p>
+    </div>
 
-    <!-- Game Settings Card -->
-    <div class="md-card-elevated animate-in" style="padding: var(--spacing-xl);">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Spielregeln</h3>
-        <form method="POST" style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
-
-            <div class="md-input-container" style="margin-bottom: 0;">
-                <label class="md-label">Startzeit (HH:MM)</label>
-                <input type="text" name="notify_time" value="{{ settings.notify_time }}" class="md-input" required>
+    <!-- Game Settings -->
+    <div class="md-card-elevated animate-in mb-md" style="padding: 24px;">
+        <h3 class="mb-md" style="font-size: 0.75rem;">Konfiguration</h3>
+        <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label class="text-secondary"
+                        style="font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">STARTZEIT</label>
+                    <input type="text" name="notify_time" value="{{ settings.notify_time }}" class="md-input-filled"
+                        required placeholder="12:00">
+                </div>
+                <div>
+                    <label class="text-secondary"
+                        style="font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">LOCKSIDE</label>
+                    <input type="text" name="dinner_time" value="{{ settings.dinner_time }}" class="md-input-filled"
+                        required placeholder="18:00">
+                </div>
             </div>
 
-            <div class="md-input-container" style="margin-bottom: 0;">
-                <label class="md-label">Abstimmung/Lock (HH:MM)</label>
-                <input type="text" name="dinner_time" value="{{ settings.dinner_time }}" class="md-input" required>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label class="text-secondary"
+                        style="font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">COOLDOWN
+                        (TAGE)</label>
+                    <input type="number" name="cooldown_days" value="{{ settings.cooldown_days }}"
+                        class="md-input-filled" required>
+                </div>
+                <div>
+                    <label class="text-secondary"
+                        style="font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 8px; margin-left: 4px;">MAX.
+                        ÄNDERUNGEN</label>
+                    <input type="number" name="max_changes" value="{{ settings.max_changes }}" class="md-input-filled"
+                        required>
+                </div>
             </div>
 
-            <div class="md-input-container" style="margin-bottom: 0;">
-                <label class="md-label">Wort-Sperre (Tage)</label>
-                <input type="number" name="cooldown_days" value="{{ settings.cooldown_days }}" class="md-input"
-                    required>
-            </div>
-
-            <div class="md-input-container" style="margin-bottom: 0;">
-                <label class="md-label">Max. Änderungen</label>
-                <input type="number" name="max_changes" value="{{ settings.max_changes }}" class="md-input" required>
-            </div>
-
-            <button type="submit" name="update_settings" class="md-button md-button-filled w-full"
-                style="height: 48px;">
+            <button type="submit" name="update_settings" class="md-button md-button-filled w-full mt-lg">
                 <span class="material-symbols-rounded">save</span>
                 <span>Einstellungen speichern</span>
             </button>
         </form>
     </div>
 
-    <!-- User Management Card -->
-    <div class="md-card animate-in" style="padding: var(--spacing-xl);">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Benutzer & Punkte</h3>
-        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+    <!-- User Management -->
+    <div class="md-card-outlined animate-in" style="padding: 24px;">
+        <h3 class="mb-md" style="font-size: 0.75rem;">Spielerverwaltung</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
             {% for user in users %}
-            <div class="md-card-filled" style="padding: var(--spacing-lg);">
-                <div
-                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-md);">
-                    <div>
-                        <div style="font-weight: 500; font-size: 16px; margin-bottom: 4px;">
-                            {{ user.username }}
+            <div class="md-card" style="padding: 16px; background: var(--md-surface-container-high);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div
+                            style="width: 36px; height: 36px; background: var(--md-primary-container); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;">
+                            {{ user.username[0]|upper }}
                         </div>
-                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                            <span class="md-chip" style="font-size: 12px; padding: 4px 8px; height: auto;">{{ user.role
-                                }}</span>
-                            <span class="text-primary font-medium" style="font-size: 14px;">{{ user.points }}
-                                Punkte</span>
+                        <div>
+                            <div style="font-weight: 700;">{{ user.username }}</div>
+                            <div class="text-secondary" style="font-size: 0.7rem;">{{ user.role|upper }}</div>
                         </div>
                     </div>
                 </div>
 
-                <form method="POST" style="display: flex; gap: var(--spacing-sm); align-items: center;">
+                <form method="POST" style="display: flex; gap: 12px; align-items: flex-end;">
                     <input type="hidden" name="user_id" value="{{ user.id }}">
                     <div style="flex: 1;">
-                        <label class="md-label" style="margin-bottom: var(--spacing-xs);">Punkte setzen</label>
-                        <input type="number" name="points" value="{{ user.points }}" class="md-input"
-                            style="margin-bottom: 0;">
+                        <input type="number" name="points" value="{{ user.points }}" class="md-input-filled"
+                            style="height: 44px; padding: 0 16px;">
                     </div>
                     <button type="submit" name="reward_points" class="md-button md-button-tonal"
-                        style="margin-top: 20px;">
-                        <span class="material-symbols-rounded">check</span>
-                        <span>Setzen</span>
+                        style="height: 44px; padding: 0 20px;">
+                        <span class="material-symbols-rounded" style="font-size: 18px;">save</span>
                     </button>
                 </form>
             </div>

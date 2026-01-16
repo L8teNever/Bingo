@@ -1,57 +1,71 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<!-- Top App Bar -->
+<!-- Header Bar -->
 <header class="md-top-app-bar">
-    {% if current_user.is_authenticated %}
-    <button class="md-icon-button" onclick="toggleDrawer()">
-        <span class="material-symbols-rounded">menu</span>
-    </button>
-    {% endif %}
-    <div class="md-top-app-bar-title">Worteingabe</div>
-    <div style="width: 48px;"></div> <!-- Spacer for centering -->
+    <div style="flex: 1;">
+        <span class="text-secondary"
+            style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Wort
+            Bingo</span>
+    </div>
+    <div class="md-top-app-bar-title">Dashboard</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <div
+            style="width: 32px; height: 32px; background: var(--md-secondary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center;">
+            <span class="material-symbols-rounded"
+                style="font-size: 18px; color: var(--md-on-secondary-container);">person</span>
+        </div>
+    </div>
 </header>
 
-<main style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto;">
-
+<main>
     {% if is_dinner %}
     <!-- Voting Phase -->
-    <div class="animate-in"
-        style="text-align: center; padding-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
-        <div
-            style="width: 80px; height: 80px; background: var(--md-tertiary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
-            <span class="material-symbols-rounded"
-                style="font-size: 40px; color: var(--md-on-tertiary-container);">how_to_vote</span>
+    <div class="animate-in" style="margin-bottom: var(--spacing-xl); text-align: center;">
+        <div class="md-card-elevated"
+            style="padding: var(--spacing-xl); background: linear-gradient(135deg, var(--md-primary-container), var(--md-surface-container-highest)); border: 1px solid var(--md-glass-border);">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                <div
+                    style="width: 64px; height: 64px; background: var(--md-primary); color: var(--md-on-primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--md-shadow-3);">
+                    <span class="material-symbols-rounded" style="font-size: 32px;">how_to_vote</span>
+                </div>
+                <h1 style="margin-top: 8px;">Abstimmung</h1>
+                <p class="text-secondary">Wurde ein Wort heute erwähnt? Vergib deine Stimme!</p>
+            </div>
         </div>
-        <h1 style="margin-bottom: var(--spacing-md);">Abstimmung läuft!</h1>
-        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
-            Welches Wort wurde bereits erwähnt? Vergib Punkte!
-        </p>
     </div>
 
     {% if user_word %}
-    <div class="md-card-filled animate-in"
-        style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); text-align: center;">
-        <p class="md-label" style="margin-bottom: var(--spacing-sm);">Dein Wort heute:</p>
-        <div style="font-size: 24px; font-weight: 500; color: var(--md-primary);">{{ user_word.word }}</div>
+    <div class="md-card animate-in"
+        style="background: var(--md-surface-container-high); margin-bottom: var(--spacing-lg); text-align: center;">
+        <span class="text-secondary" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Dein
+            heutiges Wort</span>
+        <div style="font-size: 2rem; font-weight: 700; color: var(--md-primary); margin-top: 4px;">{{ user_word.word }}
+        </div>
     </div>
     {% endif %}
 
-    <div class="md-card animate-in" style="padding: var(--spacing-lg); margin-bottom: auto;">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Wer gewinnt heute?</h3>
-        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+    <div class="md-card-outlined animate-in" style="margin-bottom: var(--spacing-lg);">
+        <h3 class="mb-md" style="font-size: 0.85rem;">Teilnehmer & Wörter</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
             {% for w in all_words %}
-            <div class="md-list-item"
-                style="background: var(--md-surface-container-highest); justify-content: space-between;">
-                <div style="flex: 1;">
-                    <div style="font-weight: 500; margin-bottom: 4px;">{{ w.user.username }}</div>
-                    <div class="text-primary" style="font-size: 14px;">"{{ w.word }}"</div>
+            <div class="md-card-elevated"
+                style="padding: var(--spacing-md); display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-md);">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div
+                        style="width: 40px; height: 40px; background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                        {{ w.user.username[0]|upper }}
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 1rem;">{{ w.user.username }}</div>
+                        <div class="text-primary font-bold" style="font-size: 1.1rem;">"{{ w.word }}"</div>
+                    </div>
                 </div>
                 <form action="{{ url_for('vote') }}" method="POST" style="margin: 0;">
                     <input type="hidden" name="voted_user_id" value="{{ w.user_id }}">
-                    <button type="submit" class="md-button md-button-tonal">
-                        <span class="material-symbols-rounded" style="font-size: 18px;">thumb_up</span>
-                        <span>Punkt geben</span>
+                    <button type="submit" class="md-button md-button-tonal"
+                        style="height: 44px; width: 44px; padding: 0; border-radius: 14px;">
+                        <span class="material-symbols-rounded">thumb_up</span>
                     </button>
                 </form>
             </div>
@@ -61,110 +75,92 @@
 
     {% elif is_open %}
     <!-- Submission Phase -->
-    <div class="animate-in"
-        style="text-align: center; padding-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
-        <div class="animate-pulse"
-            style="width: 80px; height: 80px; background: var(--md-primary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
-            <span class="material-symbols-rounded"
-                style="font-size: 40px; color: var(--md-on-primary-container);">lightbulb</span>
-        </div>
-        <h1 style="margin-bottom: var(--spacing-md);">Dein Bingo-Wort</h1>
-        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
-            Wähle ein Wort, das heute sicher erwähnt wird.
-        </p>
-    </div>
-
-    <!-- Word Input Card -->
-    <div class="md-card-elevated animate-in" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
-        <form id="word-form" action="{{ url_for('submit_word') }}" method="POST">
-            <div class="md-input-container" style="margin-bottom: 0;">
-                <label class="md-label">Dein Wort</label>
-                <input type="text" name="word" id="bingo-word" class="md-input-filled"
-                    placeholder="Was wird heute gesagt?" value="{{ user_word.word if user_word else '' }}"
-                    style="font-size: 20px; font-weight: 500; text-align: center; padding: var(--spacing-lg);"
-                    autocomplete="off">
+    <div class="animate-in" style="margin-bottom: var(--spacing-xl);">
+        <div style="padding: var(--spacing-lg); text-align: center;">
+            <div class="ripple-active"
+                style="width: 80px; height: 80px; background: var(--md-primary-container); color: var(--md-on-primary-container); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <span class="material-symbols-rounded" style="font-size: 40px;">auto_awesome</span>
             </div>
-        </form>
+            <h1>Bingo-Zeit!</h1>
+            <p class="text-secondary" style="font-size: 1.1rem;">Wähle dein Wort für heute.</p>
+        </div>
     </div>
 
-    {% if user_word and all_words|length >= 1 %}
-    <!-- Other Participants -->
-    <div class="md-card animate-in" style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
-        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Andere Teilnehmer</h3>
-        <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+    <div class="md-card-elevated animate-in mb-md"
+        style="background: var(--md-surface-container-lowest); padding: var(--spacing-xl);">
+        <form id="word-form" action="{{ url_for('submit_word') }}" method="POST">
+            <h3 class="mb-md" style="font-size: 0.75rem;">Deine Wahl</h3>
+            <input type="text" name="word" id="bingo-word" class="md-input-filled" placeholder="Was wird heute gesagt?"
+                value="{{ user_word.word if user_word else '' }}"
+                style="font-size: 1.4rem; font-weight: 700; text-align: center;" autocomplete="off" {{ 'disabled' if
+                user_word }}>
+        </form>
+
+        {% if user_word %}
+        <div class="mt-lg">
+            <div
+                style="display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--md-success); font-weight: 600;">
+                <span class="material-symbols-rounded">check_circle</span>
+                Eingereicht
+            </div>
+            <form action="{{ url_for('withdraw_word') }}" method="POST" style="margin-top: 16px;">
+                <button type="submit" class="md-button-text w-full" style="color: var(--md-error);">
+                    <span class="material-symbols-rounded">close</span>
+                    <span>Zurückziehen</span>
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <button type="button" onclick="document.getElementById('word-form').submit()"
+            class="md-button md-button-filled w-full mt-lg">
+            <span>Einreichen</span>
+            <span class="material-symbols-rounded">rocket_launch</span>
+        </button>
+        {% endif %}
+    </div>
+
+    {% if user_word and all_words|length > 0 %}
+    <div class="md-card animate-in">
+        <h3 class="mb-md" style="font-size: 0.75rem;">Andere Teilnehmer</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
             {% for w in all_words %}
             {% if w.user_id != current_user.id %}
-            <div class="md-list-item" style="justify-content: space-between; padding: var(--spacing-md) 0;">
-                <span class="text-secondary">{{ w.user.username }}</span>
-                <span class="text-primary font-medium">{{ w.word }}</span>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div
+                        style="width: 32px; height: 32px; background: var(--md-surface-container-high); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600;">
+                        {{ w.user.username[0]|upper }}
+                    </div>
+                    <span style="font-weight: 500;">{{ w.user.username }}</span>
+                </div>
+                <span class="text-primary font-bold">{{ w.word }}</span>
             </div>
-            {% if not loop.last %}
-            <div class="md-divider" style="margin: 0;"></div>
-            {% endif %}
+            {% if not loop.last %}<div style="height: 1px; background: var(--md-surface-container-highest);"></div>{%
+            endif %}
             {% endif %}
             {% endfor %}
             {% if all_words|length == 1 %}
-            <p class="text-secondary text-center" style="padding: var(--spacing-lg) 0; font-size: 14px;">
-                Du bist der Erste! Warte auf andere Teilnehmer...
-            </p>
+            <div class="text-secondary text-center" style="padding: 20px 0;">
+                Noch keine anderen Wörter eingereicht...
+            </div>
             {% endif %}
         </div>
     </div>
     {% endif %}
-
-    <div style="margin-bottom: auto;"></div>
 
     {% else %}
     <!-- Waiting Phase -->
     <div class="animate-in"
-        style="text-align: center; padding-top: var(--spacing-2xl); margin-bottom: var(--spacing-xl);">
-        <div
-            style="width: 80px; height: 80px; background: var(--md-surface-container-highest); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg);">
-            <span class="material-symbols-rounded"
-                style="font-size: 40px; color: var(--md-on-surface-variant);">bedtime</span>
+        style="height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div class="md-card-filled" style="padding: var(--spacing-2xl); border-radius: 40px;">
+            <div style="font-size: 64px; margin-bottom: 20px;">😴</div>
+            <h1>Nicht so schnell!</h1>
+            <p class="text-secondary mt-lg" style="max-width: 250px;">
+                Die Worteingabe startet heute um <span class="font-bold" style="color: var(--md-primary);">{{
+                    notify_time }} Uhr</span>.
+            </p>
         </div>
-        <h1 style="margin-bottom: var(--spacing-md);">Noch etwas Geduld...</h1>
-        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
-            Die Worteingabe startet um {{ notify_time }} Uhr.
-        </p>
     </div>
     {% endif %}
 </main>
-
-<!-- Footer Actions -->
-<footer
-    style="padding: var(--spacing-lg); background: var(--md-surface); border-top: 1px solid var(--md-outline-variant);">
-    {% if is_open %}
-    {% if not user_word %}
-    <!-- Submit Button -->
-    <button type="button" onclick="document.getElementById('word-form').submit()"
-        class="md-button md-button-filled w-full" style="height: 56px; font-size: 16px;">
-        <span>Wort Einreichen</span>
-        <span class="material-symbols-rounded">arrow_forward</span>
-    </button>
-    {% else %}
-    <!-- Word Submitted Confirmation -->
-    <div class="md-card-filled"
-        style="padding: var(--spacing-md); margin-bottom: var(--spacing-md); text-align: center;">
-        <div
-            style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--md-success);">
-            <span class="material-symbols-rounded">check_circle</span>
-            <span class="font-medium">Wort eingereicht</span>
-        </div>
-    </div>
-    <!-- Withdraw Button -->
-    <form action="{{ url_for('withdraw_word') }}" method="POST">
-        <button type="submit" class="md-button md-button-outlined w-full"
-            style="height: 48px; border-color: var(--md-error); color: var(--md-error);">
-            <span class="material-symbols-rounded">close</span>
-            <span>Wort zurückziehen</span>
-        </button>
-    </form>
-    {% endif %}
-    {% endif %}
-
-    <p class="text-secondary text-center" style="font-size: 12px; margin-top: var(--spacing-md);">
-        Du spielst als <span class="font-medium">{{ current_user.username }}</span>
-    </p>
-</footer>
 {% endblock %}

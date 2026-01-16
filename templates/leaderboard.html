@@ -1,59 +1,62 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<!-- Top App Bar -->
+<!-- Header Bar -->
 <header class="md-top-app-bar">
-    <button class="md-icon-button" onclick="toggleDrawer()">
-        <span class="material-symbols-rounded">menu</span>
-    </button>
-    <div class="md-top-app-bar-title">Bestenliste</div>
-    <div style="width: 48px;"></div>
+    <div style="flex: 1;"></div>
+    <div class="md-top-app-bar-title">Ranking</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <span class="material-symbols-rounded" style="color: var(--md-primary);">emoji_events</span>
+    </div>
 </header>
 
-<main style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto;">
-
+<main>
     <!-- Header Section -->
-    <div class="animate-in" style="text-align: center; margin-bottom: var(--spacing-xl);">
+    <div class="animate-in" style="margin-bottom: var(--spacing-xl); text-align: center;">
         <div
-            style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-3);">
+            style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: var(--md-shadow-4); transform: rotate(5deg);">
             <span class="material-symbols-rounded" style="font-size: 40px; color: #FFFFFF;">emoji_events</span>
         </div>
-        <h1 style="margin-bottom: var(--spacing-sm);">Leaderboard</h1>
-        <p class="text-secondary" style="font-size: 16px;">Wer führt das Bingo an?</p>
+        <h1>Bingo-Meister</h1>
+        <p class="text-secondary">Wer hat die besten Ohren am Tisch?</p>
     </div>
 
-    <!-- Leaderboard Card -->
-    <div class="md-card animate-in" style="padding: var(--spacing-md);">
+    <!-- Leaderboard -->
+    <div class="animate-in" style="display: flex; flex-direction: column; gap: 12px;">
         {% for user in users %}
-        <div class="md-list-item"
-            style="padding: var(--spacing-lg); {% if not loop.last %}border-bottom: 1px solid var(--md-outline-variant);{% endif %}">
-            <div style="display: flex; align-items: center; gap: var(--spacing-lg); flex: 1;">
-                <!-- Rank Badge -->
-                <div style="width: 48px; height: 48px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; 
-                    {% if loop.index == 1 %}
-                        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #FFFFFF; box-shadow: var(--md-shadow-2);
-                    {% elif loop.index == 2 %}
-                        background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%); color: #FFFFFF; box-shadow: var(--md-shadow-1);
-                    {% elif loop.index == 3 %}
-                        background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%); color: #FFFFFF; box-shadow: var(--md-shadow-1);
-                    {% else %}
-                        background: var(--md-surface-container-highest); color: var(--md-on-surface-variant);
-                    {% endif %}">
-                    {{ loop.index }}
+        {% set is_first = loop.index == 1 %}
+        {% set is_top3 = loop.index <= 3 %} <div class="md-card-elevated"
+            style="padding: 16px; display: flex; align-items: center; gap: 16px; border-radius: var(--radius-md); background: {{ 'var(--md-primary-container)' if is_first else 'var(--md-surface-container-highest)' }};">
+            <!-- Rank Indicator -->
+            <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; 
+                {% if loop.index == 1 %} background: #FFD700; color: #000; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+                {% elif loop.index == 2 %} background: #E0E0E0; color: #333;
+                {% elif loop.index == 3 %} background: #CD7F32; color: #FFF;
+                {% else %} background: var(--md-surface-container-low); color: var(--md-on-surface-variant);
+                {% endif %}">
+                {{ loop.index }}
+            </div>
+
+            <!-- Profile Info -->
+            <div style="flex: 1;">
+                <div
+                    style="font-weight: 700; font-size: 1.1rem; color: {{ 'var(--md-on-primary-container)' if is_first else 'var(--md-on-surface)' }};">
+                    {{ user.username }}
                 </div>
-
-                <!-- Username -->
-                <span style="font-size: 18px; font-weight: 500; flex: 1;">{{ user.username }}</span>
+                <div class="text-secondary" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                    {{ 'Champion' if is_first else 'Teilnehmer' }}
+                </div>
             </div>
 
-            <!-- Points -->
+            <!-- Score -->
             <div style="text-align: right;">
-                <div style="font-size: 28px; font-weight: 700; color: var(--md-primary); line-height: 1;">{{ user.points
-                    }}</div>
-                <div class="md-label" style="margin: 0;">Punkte</div>
+                <div style="font-size: 1.75rem; font-weight: 800; color: var(--md-primary); line-height: 1;">{{
+                    user.points }}</div>
+                <div class="text-secondary" style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase;">
+                    Punkte</div>
             </div>
-        </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
     </div>
 </main>
 {% endblock %}

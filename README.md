@@ -176,10 +176,32 @@ Bingo/
 
 ## 🔒 Sicherheit
 
-- Passwörter werden mit Werkzeug's `generate_password_hash` gehasht
-- CSRF-Schutz durch Flask-Login
-- Non-Root Docker-Container für erhöhte Sicherheit
-- Umgebungsvariablen für sensible Daten
+**⚠️ WICHTIG:** Dieses Projekt enthält sensible Daten. Bitte lies die [SECURITY.md](SECURITY.md) für detaillierte Sicherheitsrichtlinien.
+
+### Implementierte Sicherheitsmaßnahmen
+
+- ✅ **Passwort-Hashing**: Alle Passwörter werden mit Werkzeug's `generate_password_hash` gehasht
+- ✅ **Keine Klartext-Passwörter**: Passwörter werden NIE im Klartext gespeichert
+- ✅ **Umgebungsvariablen**: Sensible Daten (SECRET_KEY, Passwörter) nur über `.env`
+- ✅ **Git-Schutz**: `.env` und Datenbanken sind in `.gitignore` eingetragen
+- ✅ **Docker-Schutz**: `.env` wird NICHT ins Docker-Image kopiert
+- ✅ **CSRF-Schutz**: Durch Flask-Login und Session-Management
+- ✅ **Non-Root Container**: Docker-Container läuft als unprivilegierter Benutzer
+
+### Vor dem Deployment
+
+```bash
+# 1. Starken SECRET_KEY generieren
+python -c "import secrets; print(secrets.token_hex(32))"
+
+# 2. .env Datei erstellen (NICHT committen!)
+cp .env.example .env
+# Dann .env bearbeiten und echte Werte eintragen
+
+# 3. Standard-Admin-Passwort ändern (nach erstem Login)
+```
+
+**📖 Weitere Details:** Siehe [SECURITY.md](SECURITY.md) für vollständige Sicherheitsrichtlinien.
 
 ## 🛠️ Entwicklung
 
