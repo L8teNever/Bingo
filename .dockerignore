@@ -1,7 +1,54 @@
-__pycache__
-*.pyc
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.eggs/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Database (lokal)
 instance/
-bingo.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dokumentation
+README.md
+*.md
+
+# Tests
+tests/
+test_*.py
+*_test.py
+o.db
 .git
 .github
 .gitignore

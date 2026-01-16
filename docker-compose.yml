@@ -3,14 +3,23 @@ version: '3.8'
 services:
   bingo:
     build: .
-    image: l8tenever/bingo:latest
-    container_name: dinner_bingo
+    container_name: dinner-bingo
     ports:
-      - "5007:5000"
-    # WICHTIG: Das Volume sorgt dafür, dass die Datenbank (Benutzer, Punkte etc.) 
-    # auch nach einem Container-Update erhalten bleibt.
-    volumes:
-      - ./instance:/app/instance
+      - "5000:5000"
     environment:
-      - SECRET_KEY=${SECRET_KEY:-bingo-secret-key-123}
-    restart: always
+      - SECRET_KEY=your-secret-key-change-in-production
+      - FLASK_ENV=production
+    volumes:
+      # WICHTIG: Volume für Datenbankpersistenz
+      - bingo-data:/app/instance
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  bingo-data:
+    driver: local

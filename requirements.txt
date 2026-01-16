@@ -1,5 +1,7 @@
-flask
-flask-login
-flask-sqlalchemy
-werkzeug
-pywebpush
+Flask==3.0.0
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.1.1
+Werkzeug==3.0.1
+pywebpush==1.14.0
+gunicorn==21.2.0
+
