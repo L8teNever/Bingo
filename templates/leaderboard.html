@@ -11,49 +11,47 @@
 </header>
 
 <main>
-    <!-- Header Section -->
-    <div class="animate-in" style="margin-bottom: var(--spacing-xl); text-align: center;">
-        <div
-            style="width: 80px; height: 80px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); border-radius: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: var(--md-shadow-4); transform: rotate(5deg);">
-            <span class="material-symbols-rounded" style="font-size: 40px; color: #FFFFFF;">emoji_events</span>
-        </div>
-        <h1>Bingo-Meister</h1>
-        <p class="text-secondary">Wer hat die besten Ohren am Tisch?</p>
+    <div class="animate-in" style="margin-bottom: 32px; text-align: center;">
+        <h1 style="font-size: 2.5rem; color: var(--md-primary);">Ranking</h1>
+        <p class="text-secondary">Wer hat die schärfsten Ohren?</p>
     </div>
 
-    <!-- Leaderboard -->
-    <div class="animate-in" style="display: flex; flex-direction: column; gap: 12px;">
+    <!-- Leaderboard List -->
+    <div class="animate-in" style="display: flex; flex-direction: column; gap: 16px;">
         {% for user in users %}
         {% set is_first = loop.index == 1 %}
-        <div class="md-card"
-            style="padding: 16px; display: flex; align-items: center; gap: 16px; border-radius: 20px; background: {{ 'var(--md-primary-container)' if is_first else 'var(--md-surface-container-high)' }};">
-            <!-- Rank Indicator -->
-            <div style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; 
-                {% if loop.index == 1 %} background: #FFD700; color: #000;
-                {% elif loop.index == 2 %} background: #E0E0E0; color: #333;
-                {% elif loop.index == 3 %} background: #CD7F32; color: #FFF;
+        <div class="md-card-elevated"
+            style="padding: 16px; margin-bottom: 0; display: flex; align-items: center; gap: 20px; border-radius: 24px; background: {{ 'var(--md-primary-container)' if is_first else 'var(--md-surface-container-low)' }};">
+
+            <!-- Rank Badge -->
+            <div style="width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; 
+                {% if loop.index == 1 %} background: #FFD700; color: #5B4500;
+                {% elif loop.index == 2 %} background: #E0E0E0; color: #444;
+                {% elif loop.index == 3 %} background: #CD7F32; color: #4A2E12;
                 {% else %} background: var(--md-surface); color: var(--md-on-surface-variant);
                 {% endif %}">
                 {{ loop.index }}
             </div>
 
-            <!-- Profile Info -->
+            <!-- User Info -->
             <div style="flex: 1;">
                 <div
-                    style="font-weight: 700; font-size: 18px; color: {{ 'var(--md-on-primary-container)' if is_first else 'var(--md-on-surface)' }};">
+                    style="font-weight: 700; font-size: 1.1rem; color: {{ 'var(--md-on-primary-container)' if is_first else 'var(--md-on-surface)' }};">
                     {{ user.username }}
                 </div>
-                <div class="text-secondary" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">
-                    {{ 'Champion' if is_first else 'Teilnehmer' }}
+                <div class="text-secondary"
+                    style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7;">
+                    {{ 'Anführer' if is_first else 'Teilnehmer' }}
                 </div>
             </div>
 
             <!-- Score -->
-            <div style="text-align: right;">
-                <div style="font-size: 24px; font-weight: 800; color: var(--md-primary); line-height: 1;">{{ user.points
-                    }}</div>
-                <div class="text-secondary" style="font-size: 10px; font-weight: 700; text-transform: uppercase;">Punkte
-                </div>
+            <div
+                style="text-align: right; background: var(--md-surface-container-highest); padding: 8px 16px; border-radius: 12px;">
+                <div style="font-size: 1.5rem; font-weight: 800; color: var(--md-primary); line-height: 1;">{{
+                    user.points }}</div>
+                <div class="text-secondary" style="font-size: 0.6rem; font-weight: 700; text-transform: uppercase;">
+                    Punkte</div>
             </div>
         </div>
         {% endfor %}

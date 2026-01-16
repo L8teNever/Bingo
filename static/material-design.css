@@ -1,35 +1,64 @@
 /* 
-   Android 16 / Material You - "The Floating Island" Design
-   Author: Antigravity
+   ========================================
+   ANDROID 16 - MATERIAL YOU DESIGN SYSTEM
+   Bingo Edition - Final Polish
+   ========================================
 */
 
 :root {
-    --primary: #6750A4;
-    --primary-container: #EADDFF;
-    --on-primary: #FFFFFF;
-    --on-primary-container: #21005D;
+    /* M3 / Android 16 Color Tones */
+    --md-primary: #6750A4;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #EADDFF;
+    --md-on-primary-container: #21005D;
 
-    --secondary: #625B71;
-    --secondary-container: #E8DEF8;
-    --on-secondary-container: #1D192B;
+    --md-secondary: #625B71;
+    --md-on-secondary: #FFFFFF;
+    --md-secondary-container: #E8DEF8;
+    --md-on-secondary-container: #1D192B;
 
-    --surface: #FDFBFF;
-    --surface-container: #F4F1F8;
-    --surface-container-high: #EDE8F2;
-    --on-surface: #1C1B1F;
-    --on-surface-variant: #49454E;
+    --md-tertiary: #7D5260;
+    --md-on-tertiary: #FFFFFF;
+    --md-tertiary-container: #FFD8E4;
+    --md-on-tertiary-container: #31111D;
 
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.4);
+    --md-surface: #FEF7FF;
+    --md-on-surface: #1D1B20;
+    --md-surface-variant: #E7E0EB;
+    --md-on-surface-variant: #49454F;
 
-    --radius-pill: 1000px;
-    --radius-xl: 32px;
+    --md-surface-container-lowest: #FFFFFF;
+    --md-surface-container-low: #F7F2FA;
+    --md-surface-container: #F3EDF7;
+    --md-surface-container-high: #ECE6F0;
+    --md-surface-container-highest: #E6E0E9;
+
+    --md-outline: #79747E;
+    --md-outline-variant: #C4C7C5;
+
+    --md-error: #B3261E;
+    --md-error-container: #F9DEDC;
+    --md-on-error-container: #410E0B;
+
+    --md-success: #2E7D32;
+    --md-success-container: #C8E6C9;
+
+    /* Spacing & Radii */
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius-md: 16px;
     --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-pill: 1000px;
 
-    --font-main: 'Outfit', sans-serif;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
 }
 
-/* Global Reset & App Feel */
+/* Base Reset */
 * {
     margin: 0;
     padding: 0;
@@ -38,25 +67,85 @@
 }
 
 body {
-    font-family: var(--font-main);
-    background: linear-gradient(180deg, #F3EDF7 0%, #FDFBFF 100%);
-    color: var(--on-surface);
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--md-surface);
+    color: var(--md-on-surface);
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    -webkit-font-smoothing: antialiased;
 }
 
-a {
-    text-decoration: none !important;
-    color: inherit;
+/* Layout Container */
+.container {
+    width: 100%;
+    max-width: 480px;
+    /* Modern narrow mobile context */
+    background: var(--md-surface);
+    position: relative;
+    padding-bottom: 120px;
+    /* Space for the floating nav */
+    min-height: 100vh;
 }
 
-/* Icon Fix - Bulletproof */
+main {
+    padding: var(--space-lg);
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    color: var(--md-on-surface);
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--md-on-surface-variant);
+}
+
+.text-secondary {
+    color: var(--md-on-surface-variant);
+    font-size: 0.95rem;
+}
+
+.text-primary {
+    color: var(--md-primary);
+}
+
+.text-error {
+    color: var(--md-error);
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Icon System - FIXED */
 .material-symbols-rounded {
     font-family: 'Material Symbols Rounded' !important;
     font-weight: normal;
+    font-style: normal;
     font-size: 24px;
     display: inline-block;
     line-height: 1;
@@ -66,31 +155,17 @@ a {
     white-space: nowrap;
     direction: ltr;
     -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Layout Container */
-.container {
-    width: 100%;
-    max-width: 500px;
-    /* Slimmer mobile feel */
-    min-height: 100vh;
-    padding-bottom: 120px;
-    /* Space for the floating island */
-    position: relative;
-}
-
-main {
-    padding: 24px 20px;
-}
-
-/* Header - Modern Centered */
+/* Header / Top Bar */
 .md-top-app-bar {
-    height: 72px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    background: rgba(253, 251, 255, 0.8);
+    padding: 0 var(--space-lg);
+    background: rgba(254, 247, 255, 0.85);
     backdrop-filter: blur(20px);
     position: sticky;
     top: 0;
@@ -98,46 +173,39 @@ main {
 }
 
 .md-top-app-bar-title {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    background: linear-gradient(90deg, var(--primary), #9c27b0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--md-on-surface);
 }
 
-/* Floating Navigation Island */
+/* Floating Navigation Island - ANDROID 16 PILL */
 .md-bottom-nav {
     position: fixed !important;
-    bottom: 32px !important;
+    bottom: 24px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 90% !important;
-    max-width: 420px !important;
+    width: calc(100% - 48px) !important;
+    max-width: 400px !important;
     height: 80px !important;
-    background: rgba(30, 27, 33, 0.95) !important;
-    /* Dark Premium Theme */
-    backdrop-filter: blur(15px) !important;
+    background: #1D1B20 !important;
+    /* Dark theme nav is very M3 */
     display: flex !important;
-    justify-content: space-evenly !important;
     align-items: center !important;
-    padding: 0 8px !important;
+    justify-content: space-around !important;
+    padding: 0 12px !important;
     border-radius: 40px !important;
     z-index: 1000 !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
 }
 
 .md-nav-item {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
     gap: 4px !important;
-    flex: 1 !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    height: 100% !important;
+    text-decoration: none !important;
+    color: #CAC4D0 !important;
+    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
 }
 
 .md-nav-item i {
@@ -147,7 +215,7 @@ main {
     align-items: center !important;
     justify-content: center !important;
     border-radius: 20px !important;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease !important;
 }
 
 .md-nav-item.active {
@@ -155,113 +223,122 @@ main {
 }
 
 .md-nav-item.active i {
-    background: var(--primary) !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 4px 15px rgba(103, 80, 164, 0.4);
+    background: #4F378B !important;
+    color: #EADDFF !important;
 }
 
 .md-nav-item span {
     font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px !important;
 }
 
-/* Cards & Components */
-.md-card-elevated {
-    background: white;
-    border-radius: var(--radius-xl);
-    padding: 28px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-    margin-bottom: 24px;
-    border: 1px solid var(--surface-container-high);
-}
-
+/* Cards */
 .md-card {
-    background: var(--surface-container);
+    background: var(--md-surface-container);
     border-radius: var(--radius-lg);
-    padding: 20px;
-    border: none;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    transition: transform 0.2s ease;
 }
 
-/* Inputs - Android 16 Premium */
+.md-card-elevated {
+    background: var(--md-surface-container-lowest);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--space-lg);
+}
+
+.md-card-outlined {
+    background: transparent;
+    border: 1px solid var(--md-outline-variant);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+}
+
+/* Inputs */
 .md-input-filled {
     width: 100%;
-    height: 64px;
-    background: var(--surface-container-high) !important;
+    height: 60px;
+    background: var(--md-surface-container-high) !important;
     border: 2px solid transparent !important;
-    border-radius: 20px !important;
-    padding: 0 24px !important;
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    color: var(--on-surface) !important;
+    border-radius: 16px !important;
+    padding: 0 20px !important;
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+    color: var(--md-on-surface) !important;
     outline: none !important;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease !important;
 }
 
 .md-input-filled:focus {
-    background: #FFFFFF !important;
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 6px var(--primary-container) !important;
+    background: var(--md-surface-container-lowest) !important;
+    border-color: var(--md-primary) !important;
 }
 
 /* Buttons */
 .md-button-filled {
-    background: var(--primary);
-    color: white;
-    height: 64px;
+    background: var(--md-primary);
+    color: var(--md-on-primary);
+    height: 56px;
     border-radius: var(--radius-pill);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 700;
     border: none;
     cursor: pointer;
     width: 100%;
-    box-shadow: 0 8px 25px rgba(103, 80, 164, 0.25);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.md-button-filled:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(103, 80, 164, 0.3);
+    transition: all 0.2s ease;
 }
 
 .md-button-filled:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
+    opacity: 0.9;
 }
 
-/* Animation Classes */
-@keyframes popIn {
-    0% {
+.md-button-tonal {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from {
         opacity: 0;
-        transform: scale(0.9) translateY(20px);
+        transform: translateY(20px);
     }
 
-    100% {
+    to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: translateY(0);
     }
 }
 
 .animate-in {
-    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: slideUp 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 /* Utilities */
-.text-secondary {
-    color: var(--on-surface-variant);
+.mb-md {
+    margin-bottom: var(--space-md);
 }
 
-.font-bold {
-    font-weight: 800;
+.mt-lg {
+    margin-top: var(--space-lg);
 }
 
-.text-center {
-    text-align: center;
-}
-
-.mb-lg {
-    margin-bottom: 32px;
+.w-full {
+    width: 100%;
 }
