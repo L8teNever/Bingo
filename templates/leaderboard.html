@@ -25,14 +25,14 @@
     <div class="animate-in" style="display: flex; flex-direction: column; gap: 12px;">
         {% for user in users %}
         {% set is_first = loop.index == 1 %}
-        {% set is_top3 = loop.index <= 3 %} <div class="md-card-elevated"
-            style="padding: 16px; display: flex; align-items: center; gap: 16px; border-radius: var(--radius-md); background: {{ 'var(--md-primary-container)' if is_first else 'var(--md-surface-container-highest)' }};">
+        <div class="md-card"
+            style="padding: 16px; display: flex; align-items: center; gap: 16px; border-radius: 20px; background: {{ 'var(--md-primary-container)' if is_first else 'var(--md-surface-container-high)' }};">
             <!-- Rank Indicator -->
-            <div style="width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; 
-                {% if loop.index == 1 %} background: #FFD700; color: #000; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            <div style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; 
+                {% if loop.index == 1 %} background: #FFD700; color: #000;
                 {% elif loop.index == 2 %} background: #E0E0E0; color: #333;
                 {% elif loop.index == 3 %} background: #CD7F32; color: #FFF;
-                {% else %} background: var(--md-surface-container-low); color: var(--md-on-surface-variant);
+                {% else %} background: var(--md-surface); color: var(--md-on-surface-variant);
                 {% endif %}">
                 {{ loop.index }}
             </div>
@@ -40,23 +40,23 @@
             <!-- Profile Info -->
             <div style="flex: 1;">
                 <div
-                    style="font-weight: 700; font-size: 1.1rem; color: {{ 'var(--md-on-primary-container)' if is_first else 'var(--md-on-surface)' }};">
+                    style="font-weight: 700; font-size: 18px; color: {{ 'var(--md-on-primary-container)' if is_first else 'var(--md-on-surface)' }};">
                     {{ user.username }}
                 </div>
-                <div class="text-secondary" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">
+                <div class="text-secondary" style="font-size: 11px; font-weight: 700; text-transform: uppercase;">
                     {{ 'Champion' if is_first else 'Teilnehmer' }}
                 </div>
             </div>
 
             <!-- Score -->
             <div style="text-align: right;">
-                <div style="font-size: 1.75rem; font-weight: 800; color: var(--md-primary); line-height: 1;">{{
-                    user.points }}</div>
-                <div class="text-secondary" style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase;">
-                    Punkte</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--md-primary); line-height: 1;">{{ user.points
+                    }}</div>
+                <div class="text-secondary" style="font-size: 10px; font-weight: 700; text-transform: uppercase;">Punkte
+                </div>
             </div>
-    </div>
-    {% endfor %}
+        </div>
+        {% endfor %}
     </div>
 </main>
 {% endblock %}
