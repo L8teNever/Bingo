@@ -1,45 +1,66 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<header class="flex items-center justify-center p-4 pt-8 w-full" style="z-index: 20;">
-    <h2 style="font-size: 1.125rem; font-weight: 700;">Einstellungen</h2>
+<!-- Top App Bar -->
+<header class="md-top-app-bar">
+    <button class="md-icon-button" onclick="toggleDrawer()">
+        <span class="material-symbols-rounded">menu</span>
+    </button>
+    <div class="md-top-app-bar-title">Einstellungen</div>
+    <div style="width: 48px;"></div>
 </header>
 
-<main style="flex: 1; display: flex; flex-direction: column; padding: 1rem 1.5rem 2rem; overflow-y: auto;">
-    <div style="text-align: center; margin-bottom: 2rem;">
+<main style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto;">
+
+    <!-- Header Section -->
+    <div class="animate-in" style="text-align: center; margin-bottom: var(--spacing-xl);">
         <div
-            style="width: 64px; height: 64px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: #60a5fa;">
-            <span class="material-symbols-outlined" style="font-size: 32px;">person_setting</span>
+            style="width: 80px; height: 80px; background: var(--md-secondary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
+            <span class="material-symbols-rounded"
+                style="font-size: 40px; color: var(--md-on-secondary-container);">settings</span>
         </div>
-        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.5rem;">Dein Profil</h1>
-        <p style="color: var(--text-muted);">Verwalte dein Konto und Einstellungen</p>
+        <h1 style="margin-bottom: var(--spacing-sm);">Dein Profil</h1>
+        <p class="text-secondary" style="font-size: 16px;">Verwalte dein Konto und Einstellungen</p>
     </div>
 
-    <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem;">
-            Passwort ändern</h3>
-        <form action="{{ url_for('change_password') }}" method="POST"
-            style="display: flex; flex-direction: column; gap: 1rem;">
-            <div style="position: relative;">
-                <span class="material-symbols-outlined"
-                    style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 20px;">lock</span>
-                <input type="password" name="new_password" placeholder="Neues Passwort" required
-                    style="padding-left: 3rem; width: 100%;">
+    <!-- Change Password Card -->
+    <div class="md-card-elevated animate-in" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
+        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Passwort ändern</h3>
+        <form action="{{ url_for('change_password') }}" method="POST">
+            <div class="md-input-container">
+                <label class="md-label">Neues Passwort</label>
+                <div style="position: relative;">
+                    <span class="material-symbols-rounded"
+                        style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">lock</span>
+                    <input type="password" name="new_password" class="md-input"
+                        placeholder="Gib dein neues Passwort ein" required style="padding-left: 48px;">
+                </div>
             </div>
-            <button type="submit" class="btn" style="width: 100%;">Passwort speichern</button>
+            <button type="submit" class="md-button md-button-filled w-full" style="height: 48px;">
+                <span class="material-symbols-rounded">save</span>
+                <span>Passwort speichern</span>
+            </button>
         </form>
     </div>
 
-    <div class="glass-panel" style="padding: 1.5rem;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-            Konto</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Du bist angemeldet als <strong>{{
-                current_user.username }}</strong>.</p>
-        <a href="{{ url_for('logout') }}" class="btn btn-secondary"
-            style="width: 100%; border-color: #ef4444; color: #ef4444;">
-            <i class="fa-solid fa-right-from-bracket" style="margin-right: 0.5rem;"></i> Abmelden
+    <!-- Account Info Card -->
+    <div class="md-card animate-in" style="padding: var(--spacing-xl);">
+        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Konto</h3>
+        <div class="md-card-filled"
+            style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-md);">
+            <div
+                style="width: 48px; height: 48px; background: var(--md-primary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-rounded" style="color: var(--md-on-primary-container);">person</span>
+            </div>
+            <div>
+                <div class="md-label" style="margin-bottom: 4px;">Angemeldet als</div>
+                <div style="font-size: 18px; font-weight: 500;">{{ current_user.username }}</div>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="md-button md-button-outlined md-button-error w-full"
+            style="height: 48px; border-color: var(--md-error); color: var(--md-error);">
+            <span class="material-symbols-rounded">logout</span>
+            <span>Abmelden</span>
         </a>
     </div>
 </main>

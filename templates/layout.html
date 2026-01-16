@@ -7,457 +7,34 @@
     <title>Wort Bingo</title>
     <link rel="manifest" href="/static/manifest.json">
     <meta name="theme-color" content="#6750A4">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@300&display=swap"
+
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         rel="stylesheet">
-    <style>
-        :root {
-            /* Material You Color Palette */
-            --md-primary: #6750A4;
-            --md-primary-container: #EADDFF;
-            --md-on-primary: #FFFFFF;
-            --md-on-primary-container: #21005D;
-
-            --md-secondary: #625B71;
-            --md-secondary-container: #E8DEF8;
-            --md-on-secondary: #FFFFFF;
-            --md-on-secondary-container: #1D192B;
-
-            --md-tertiary: #7D5260;
-            --md-tertiary-container: #FFD8E4;
-
-            --md-surface: #FEF7FF;
-            --md-surface-variant: #E7E0EC;
-            --md-on-surface: #1C1B1F;
-            --md-on-surface-variant: #49454F;
-
-            --md-outline: #79747E;
-            --md-outline-variant: #CAC4D0;
-
-            --md-background: #FEF7FF;
-            --md-error: #B3261E;
-            --md-error-container: #F9DEDC;
-
-            /* Shadows */
-            --md-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --md-shadow-2: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --md-shadow-3: 0 4px 16px rgba(0, 0, 0, 0.12);
-
-            /* Spacing */
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
-
-            /* Border Radius */
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 28px;
-            --radius-full: 100px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: var(--md-background);
-            color: var(--md-on-surface);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1.5;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: var(--md-surface);
-        }
-
-        /* Material Symbols */
-        .material-symbols-rounded {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 28px;
-            font-weight: 400;
-            letter-spacing: 0;
-            line-height: 36px;
-        }
-
-        h2 {
-            font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 0;
-            line-height: 28px;
-        }
-
-        h3 {
-            font-size: 16px;
-            font-weight: 500;
-            letter-spacing: 0.1px;
-            line-height: 24px;
-        }
-
-        /* Cards */
-        .md-card {
-            background: var(--md-surface);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            box-shadow: var(--md-shadow-1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .md-card:hover {
-            box-shadow: var(--md-shadow-2);
-        }
-
-        .md-card-elevated {
-            background: var(--md-surface);
-            box-shadow: var(--md-shadow-2);
-        }
-
-        .md-card-filled {
-            background: var(--md-surface-variant);
-            box-shadow: none;
-        }
-
-        /* Buttons */
-        .md-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-sm);
-            padding: 10px 24px;
-            border: none;
-            border-radius: var(--radius-full);
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.1px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            outline: none;
-        }
-
-        .md-button-filled {
-            background: var(--md-primary);
-            color: var(--md-on-primary);
-            box-shadow: var(--md-shadow-1);
-        }
-
-        .md-button-filled:hover {
-            box-shadow: var(--md-shadow-2);
-            transform: translateY(-1px);
-        }
-
-        .md-button-filled:active {
-            transform: scale(0.98);
-        }
-
-        .md-button-tonal {
-            background: var(--md-secondary-container);
-            color: var(--md-on-secondary-container);
-        }
-
-        .md-button-outlined {
-            background: transparent;
-            color: var(--md-primary);
-            border: 1px solid var(--md-outline);
-        }
-
-        .md-button-text {
-            background: transparent;
-            color: var(--md-primary);
-        }
-
-        /* FAB */
-        .md-fab {
-            position: fixed;
-            bottom: var(--spacing-lg);
-            right: var(--spacing-lg);
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-md);
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
-            border: none;
-            box-shadow: var(--md-shadow-3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .md-fab:hover {
-            transform: scale(1.05);
-            box-shadow: var(--md-shadow-3);
-        }
-
-        /* Input Fields */
-        .md-input-container {
-            position: relative;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .md-input {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid var(--md-outline);
-            border-radius: var(--radius-sm);
-            background: var(--md-surface);
-            color: var(--md-on-surface);
-            font-family: 'Roboto', sans-serif;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .md-input:focus {
-            border-color: var(--md-primary);
-            border-width: 2px;
-            padding: 15px;
-        }
-
-        .md-input-filled {
-            background: var(--md-surface-variant);
-            border: none;
-            border-bottom: 1px solid var(--md-outline);
-            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-        }
-
-        .md-input-filled:focus {
-            border-bottom: 2px solid var(--md-primary);
-            padding: 16px 16px 15px 16px;
-        }
-
-        /* Top App Bar */
-        .md-top-app-bar {
-            display: flex;
-            align-items: center;
-            padding: var(--spacing-sm) var(--spacing-md);
-            background: var(--md-surface);
-            min-height: 64px;
-            gap: var(--spacing-md);
-        }
-
-        .md-icon-button {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-full);
-            border: none;
-            background: transparent;
-            color: var(--md-on-surface);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .md-icon-button:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        /* Navigation Drawer */
-        .md-drawer {
-            position: fixed;
-            left: -320px;
-            top: 0;
-            width: 320px;
-            height: 100vh;
-            background: var(--md-surface);
-            box-shadow: var(--md-shadow-3);
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            padding: var(--spacing-lg);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .md-drawer.active {
-            left: 0;
-        }
-
-        .md-drawer-item {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-            padding: 12px var(--spacing-md);
-            border-radius: var(--radius-full);
-            color: var(--md-on-surface);
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .md-drawer-item:hover,
-        .md-drawer-item.active {
-            background: var(--md-secondary-container);
-            color: var(--md-on-secondary-container);
-        }
-
-        .md-scrim {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 999;
-            display: none;
-            backdrop-filter: blur(4px);
-        }
-
-        .md-scrim.active {
-            display: block;
-        }
-
-        /* Chips */
-        .md-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-xs);
-            padding: 6px 12px;
-            border-radius: var(--radius-sm);
-            background: var(--md-surface-variant);
-            color: var(--md-on-surface-variant);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Divider */
-        .md-divider {
-            height: 1px;
-            background: var(--md-outline-variant);
-            margin: var(--spacing-md) 0;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Utility Classes */
-        .text-primary {
-            color: var(--md-primary);
-        }
-
-        .text-secondary {
-            color: var(--md-on-surface-variant);
-        }
-
-        .text-error {
-            color: var(--md-error);
-        }
-
-        .bg-primary {
-            background: var(--md-primary);
-        }
-
-        .bg-primary-container {
-            background: var(--md-primary-container);
-        }
-
-        .bg-surface-variant {
-            background: var(--md-surface-variant);
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .flex-col {
-            flex-direction: column;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-sm {
-            gap: var(--spacing-sm);
-        }
-
-        .gap-md {
-            gap: var(--spacing-md);
-        }
-
-        .gap-lg {
-            gap: var(--spacing-lg);
-        }
-
-        .p-sm {
-            padding: var(--spacing-sm);
-        }
-
-        .p-md {
-            padding: var(--spacing-md);
-        }
-
-        .p-lg {
-            padding: var(--spacing-lg);
-        }
-
-        .rounded-sm {
-            border-radius: var(--radius-sm);
-        }
-
-        .rounded-md {
-            border-radius: var(--radius-md);
-        }
-
-        .rounded-lg {
-            border-radius: var(--radius-lg);
-        }
-
-        .rounded-full {
-            border-radius: var(--radius-full);
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet">
+
+    <!-- Material Design CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='material-design.css') }}">
 </head>
 
 <body>
     {% if current_user.is_authenticated %}
+    <!-- Scrim (Overlay) -->
     <div class="md-scrim" id="scrim"></div>
+
+    <!-- Navigation Drawer -->
     <div class="md-drawer" id="drawer">
-        <div style="padding: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+        <div class="md-drawer-header">
             <h2>Wort Bingo</h2>
-            <p style="color: var(--md-on-surface-variant); font-size: 14px; margin-top: 4px;">{{ current_user.username
-                }}</p>
+            <p class="text-secondary" style="font-size: 14px; margin-top: 4px;">{{ current_user.username }}</p>
         </div>
 
         <a href="{{ url_for('dashboard') }}" class="md-drawer-item {{ 'active' if request.endpoint == 'dashboard' }}">
@@ -485,7 +62,7 @@
 
         <div style="margin-top: auto;">
             <div class="md-divider"></div>
-            <a href="{{ url_for('logout') }}" class="md-drawer-item" style="color: var(--md-error);">
+            <a href="{{ url_for('logout') }}" class="md-drawer-item text-error">
                 <span class="material-symbols-rounded">logout</span>
                 Abmelden
             </a>
@@ -501,16 +78,20 @@
             scrim.classList.toggle('active');
         }
 
-        scrim.addEventListener('click', toggleDrawer);
+        if (scrim) {
+            scrim.addEventListener('click', toggleDrawer);
+        }
     </script>
     {% endif %}
 
+    <!-- Main Container -->
     <div class="container">
+        <!-- Flash Messages -->
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div style="padding: var(--spacing-md);">
             {% for message in messages %}
-            <div class="md-card"
+            <div class="md-card animate-in"
                 style="background: var(--md-error-container); color: var(--md-error); margin-bottom: var(--spacing-sm);">
                 {{ message }}
             </div>
@@ -519,6 +100,7 @@
         {% endif %}
         {% endwith %}
 
+        <!-- Page Content -->
         {% block content %}{% endblock %}
     </div>
 </body>

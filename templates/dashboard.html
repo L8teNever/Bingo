@@ -1,50 +1,58 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<!-- Header -->
-<header class="flex items-center justify-center p-4 pt-8 w-full" style="z-index: 20;">
-    <h2 style="font-size: 1.125rem; font-weight: 700;">Worteingabe</h2>
+<!-- Top App Bar -->
+<header class="md-top-app-bar">
+    {% if current_user.is_authenticated %}
+    <button class="md-icon-button" onclick="toggleDrawer()">
+        <span class="material-symbols-rounded">menu</span>
+    </button>
+    {% endif %}
+    <div class="md-top-app-bar-title">Worteingabe</div>
+    <div style="width: 48px;"></div> <!-- Spacer for centering -->
 </header>
 
-<main style="flex: 1; display: flex; flex-direction: column; padding: 1rem 1.5rem 2rem; overflow-y: auto;">
+<main style="flex: 1; display: flex; flex-direction: column; padding: var(--spacing-lg); overflow-y: auto;">
 
     {% if is_dinner %}
     <!-- Voting Phase -->
-    <div style="text-align: center; padding-top: 1.5rem; margin-bottom: 2rem;">
+    <div class="animate-in"
+        style="text-align: center; padding-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
         <div
-            style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary);">
-            <span class="material-symbols-outlined" style="font-size: 32px;">how_to_vote</span>
+            style="width: 80px; height: 80px; background: var(--md-tertiary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
+            <span class="material-symbols-rounded"
+                style="font-size: 40px; color: var(--md-on-tertiary-container);">how_to_vote</span>
         </div>
-        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Abstimmung läuft!</h1>
-        <p style="color: var(--text-muted); line-height: 1.625rem;">
+        <h1 style="margin-bottom: var(--spacing-md);">Abstimmung läuft!</h1>
+        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
             Welches Wort wurde bereits erwähnt? Vergib Punkte!
         </p>
     </div>
 
     {% if user_word %}
-    <div class="glass-panel" style="padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
-        <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 0.5rem;">Dein Wort heute:</p>
-        <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">{{ user_word.word }}</div>
+    <div class="md-card-filled animate-in"
+        style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); text-align: center;">
+        <p class="md-label" style="margin-bottom: var(--spacing-sm);">Dein Wort heute:</p>
+        <div style="font-size: 24px; font-weight: 500; color: var(--md-primary);">{{ user_word.word }}</div>
     </div>
     {% endif %}
 
-    <div class="glass-panel" style="padding: 1.25rem; margin-bottom: auto;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-            Wer gewinnt heute?</h3>
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+    <div class="md-card animate-in" style="padding: var(--spacing-lg); margin-bottom: auto;">
+        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Wer gewinnt heute?</h3>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
             {% for w in all_words %}
-            <div
-                style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.05);">
-                <div style="text-align: left;">
-                    <div style="font-weight: 700;">{{ w.user.username }}</div>
-                    <div style="color: var(--primary); font-size: 0.9rem;">"{{ w.word }}"</div>
+            <div class="md-list-item"
+                style="background: var(--md-surface-container-highest); justify-content: space-between;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 500; margin-bottom: 4px;">{{ w.user.username }}</div>
+                    <div class="text-primary" style="font-size: 14px;">"{{ w.word }}"</div>
                 </div>
                 <form action="{{ url_for('vote') }}" method="POST" style="margin: 0;">
                     <input type="hidden" name="voted_user_id" value="{{ w.user_id }}">
-                    <button type="submit" class="btn-secondary"
-                        style="padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.8rem; cursor: pointer;">Punkt
-                        geben</button>
+                    <button type="submit" class="md-button md-button-tonal">
+                        <span class="material-symbols-rounded" style="font-size: 18px;">thumb_up</span>
+                        <span>Punkt geben</span>
+                    </button>
                 </form>
             </div>
             {% endfor %}
@@ -52,130 +60,111 @@
     </div>
 
     {% elif is_open %}
-    <!-- Submission Phase (Match provided design) -->
-    <div style="text-align: center; padding-top: 1.5rem; margin-bottom: 2rem;">
-        <div
-            style="width: 64px; height: 64px; background: rgba(242, 108, 13, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--primary); animation: pulse 2s infinite;">
-            <span class="material-symbols-outlined" style="font-size: 32px;">lightbulb</span>
+    <!-- Submission Phase -->
+    <div class="animate-in"
+        style="text-align: center; padding-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+        <div class="animate-pulse"
+            style="width: 80px; height: 80px; background: var(--md-primary-container); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg); box-shadow: var(--md-shadow-2);">
+            <span class="material-symbols-rounded"
+                style="font-size: 40px; color: var(--md-on-primary-container);">lightbulb</span>
         </div>
-        <style>
-            @keyframes pulse {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-
-                50% {
-                    transform: scale(1.05);
-                    opacity: 0.8;
-                }
-
-                100% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-            }
-        </style>
-        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Dein Bingo-Wort</h1>
-        <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
-            Wähle ein Wort, das heute am Tisch sicher erwähnt wird.
+        <h1 style="margin-bottom: var(--spacing-md);">Dein Bingo-Wort</h1>
+        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
+            Wähle ein Wort, das heute sicher erwähnt wird.
         </p>
     </div>
 
-    <div style="margin-bottom: 2rem; position: relative;">
-        <div
-            style="position: absolute; inset: -2px; background: linear-gradient(to right, var(--primary), #ff9f5e); border-radius: 2.1rem; opacity: 0.2; filter: blur(8px);">
-        </div>
-        <div class="glass-panel" style="position: relative; padding: 4px; background: var(--surface);">
-            <form id="word-form" action="{{ url_for('submit_word') }}" method="POST" style="margin: 0;">
-                <input type="text" name="word" id="bingo-word" placeholder="Was wird heute gesagt?"
-                    value="{{ user_word.word if user_word else '' }}"
-                    style="width: 100%; background: transparent; border: none; text-align: center; font-size: 1.25rem; font-weight: 600; height: 80px; padding: 0 1rem; color: white; outline: none;"
+    <!-- Word Input Card -->
+    <div class="md-card-elevated animate-in" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-lg);">
+        <form id="word-form" action="{{ url_for('submit_word') }}" method="POST">
+            <div class="md-input-container" style="margin-bottom: 0;">
+                <label class="md-label">Dein Wort</label>
+                <input type="text" name="word" id="bingo-word" class="md-input-filled"
+                    placeholder="Was wird heute gesagt?" value="{{ user_word.word if user_word else '' }}"
+                    style="font-size: 20px; font-weight: 500; text-align: center; padding: var(--spacing-lg);"
                     autocomplete="off">
-            </form>
-            <div style="height: 4px; width: 80px; background: rgba(242, 108, 13, 0.2); border-radius: 50px; margin: -10px auto 12px; transition: all 0.3s;"
-                id="input-decorator"></div>
-        </div>
-        <script>
-            const input = document.getElementById('bingo-word');
-            const decorator = document.getElementById('input-decorator');
-            input.addEventListener('focus', () => {
-                decorator.style.backgroundColor = 'var(--primary)';
-                decorator.style.width = '160px';
-            });
-            input.addEventListener('blur', () => {
-                decorator.style.backgroundColor = 'rgba(242, 108, 13, 0.2)';
-                decorator.style.width = '80px';
-            });
-        </script>
+            </div>
+        </form>
     </div>
 
     {% if user_word and all_words|length >= 1 %}
-    <div class="glass-panel" style="padding: 1.25rem; margin-bottom: 2rem;">
-        <h3
-            style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-            Andere Teilnehmer</h3>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <!-- Other Participants -->
+    <div class="md-card animate-in" style="padding: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+        <h3 class="md-label" style="margin-bottom: var(--spacing-lg);">Andere Teilnehmer</h3>
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
             {% for w in all_words %}
             {% if w.user_id != current_user.id %}
-            <div
-                style="display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.5rem 0; {{ 'border-bottom: 1px solid rgba(255,255,255,0.05);' if not loop.last }}">
-                <span style="opacity: 0.7;">{{ w.user.username }}</span>
-                <span style="font-weight: 700; color: var(--primary);">{{ w.word }}</span>
+            <div class="md-list-item" style="justify-content: space-between; padding: var(--spacing-md) 0;">
+                <span class="text-secondary">{{ w.user.username }}</span>
+                <span class="text-primary font-medium">{{ w.word }}</span>
             </div>
+            {% if not loop.last %}
+            <div class="md-divider" style="margin: 0;"></div>
+            {% endif %}
             {% endif %}
             {% endfor %}
             {% if all_words|length == 1 %}
-            <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 1rem 0; opacity: 0.6;">
-                Du bist der Erste! Warte auf andere Teilnehmer...</p>
+            <p class="text-secondary text-center" style="padding: var(--spacing-lg) 0; font-size: 14px;">
+                Du bist der Erste! Warte auf andere Teilnehmer...
+            </p>
             {% endif %}
         </div>
     </div>
     {% endif %}
 
     <div style="margin-bottom: auto;"></div>
+
     {% else %}
     <!-- Waiting Phase -->
-    <div style="text-align: center; padding-top: 3rem; margin-bottom: 2rem;">
+    <div class="animate-in"
+        style="text-align: center; padding-top: var(--spacing-2xl); margin-bottom: var(--spacing-xl);">
         <div
-            style="width: 64px; height: 64px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--text-muted);">
-            <span class="material-symbols-outlined" style="font-size: 32px;">bedtime</span>
+            style="width: 80px; height: 80px; background: var(--md-surface-container-highest); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg);">
+            <span class="material-symbols-rounded"
+                style="font-size: 40px; color: var(--md-on-surface-variant);">bedtime</span>
         </div>
-        <h1 style="font-size: 1.875rem; line-height: 2.25rem; margin-bottom: 0.75rem;">Noch etwas Geduld...</h1>
-        <p style="color: var(--text-muted); line-height: 1.625rem; max-width: 300px; margin: 0 auto;">
+        <h1 style="margin-bottom: var(--spacing-md);">Noch etwas Geduld...</h1>
+        <p class="text-secondary" style="font-size: 16px; max-width: 320px; margin: 0 auto;">
             Die Worteingabe startet um {{ notify_time }} Uhr.
         </p>
     </div>
     {% endif %}
 </main>
 
-<!-- Footer -->
+<!-- Footer Actions -->
 <footer
-    style="padding: 1rem 1.5rem 2rem; z-index: 10; background: linear-gradient(to top, var(--bg) 80%, transparent);">
+    style="padding: var(--spacing-lg); background: var(--md-surface); border-top: 1px solid var(--md-outline-variant);">
     {% if is_open %}
     {% if not user_word %}
-    <!-- Einreich-Button nur wenn noch kein Wort eingegeben -->
-    <button type="button" onclick="document.getElementById('word-form').submit()" class="btn"
-        style="width: 100%; height: 56px;">
-        <span style="font-size: 1rem; font-weight: 700; letter-spacing: 0.025em; margin-right: 0.5rem;">Wort
-            Einreichen</span>
-        <span class="material-symbols-outlined">arrow_forward</span>
+    <!-- Submit Button -->
+    <button type="button" onclick="document.getElementById('word-form').submit()"
+        class="md-button md-button-filled w-full" style="height: 56px; font-size: 16px;">
+        <span>Wort Einreichen</span>
+        <span class="material-symbols-rounded">arrow_forward</span>
     </button>
     {% else %}
-    <!-- Wenn Wort bereits eingegeben, zeige nur Zurückziehen-Option -->
-    <div style="text-align: center; margin-bottom: 1rem;">
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">✓ Wort eingereicht</p>
+    <!-- Word Submitted Confirmation -->
+    <div class="md-card-filled"
+        style="padding: var(--spacing-md); margin-bottom: var(--spacing-md); text-align: center;">
+        <div
+            style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm); color: var(--md-success);">
+            <span class="material-symbols-rounded">check_circle</span>
+            <span class="font-medium">Wort eingereicht</span>
+        </div>
     </div>
+    <!-- Withdraw Button -->
     <form action="{{ url_for('withdraw_word') }}" method="POST">
-        <button type="submit" class="btn-secondary"
-            style="width: 100%; padding: 0.75rem; border-radius: 50px; font-size: 0.9rem; cursor: pointer; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #ef4444;">Wort
-            zurückziehen</button>
+        <button type="submit" class="md-button md-button-outlined w-full"
+            style="height: 48px; border-color: var(--md-error); color: var(--md-error);">
+            <span class="material-symbols-rounded">close</span>
+            <span>Wort zurückziehen</span>
+        </button>
     </form>
     {% endif %}
     {% endif %}
 
-    <p style="text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.2); margin-top: 1rem;">
-        Du spielst als <span style="font-weight: 700; color: rgba(255,255,255,0.4);">{{ current_user.username }}</span>
+    <p class="text-secondary text-center" style="font-size: 12px; margin-top: var(--spacing-md);">
+        Du spielst als <span class="font-medium">{{ current_user.username }}</span>
     </p>
 </footer>
 {% endblock %}

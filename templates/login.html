@@ -1,51 +1,68 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="glass"
-    style="background: transparent; border: none; box-shadow: none; text-align: center; max-width: 400px;">
+<div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: var(--spacing-xl);">
+    <div class="animate-in" style="max-width: 400px; width: 100%; text-align: center;">
 
-    <div class="logo-container">
-        <i class="fa-solid fa-dice-five"></i>
-    </div>
-
-    <h1
-        style="color: white; font-size: 2.5rem; margin-bottom: 0.5rem; background: none; -webkit-text-fill-color: initial;">
-        Wort Bingo
-    </h1>
-    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
-        Das Ratespiel
-    </p>
-
-    <h2
-        style="color: white; font-size: 1.5rem; margin-bottom: 0.5rem; background: none; -webkit-text-fill-color: initial;">
-        Willkommen zurück!
-    </h2>
-    <p style="color: var(--text-muted); margin-bottom: 2rem;">
-        Bitte melde dich an, um mitzuspielen.
-    </p>
-
-    <form method="POST">
-        <div class="input-group">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" name="username" placeholder="Benutzername" required autofocus>
+        <!-- Logo Icon -->
+        <div
+            style="width: 80px; height: 80px; background: var(--md-primary-container); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-xl); box-shadow: var(--md-shadow-2);">
+            <span class="material-symbols-rounded"
+                style="font-size: 48px; color: var(--md-on-primary-container);">casino</span>
         </div>
 
-        <div class="input-group">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" name="password" placeholder="Passwort" required>
-            <i class="fa-solid fa-eye" style="left: auto; right: 20px; cursor: pointer;"></i>
+        <!-- Title -->
+        <h1 style="margin-bottom: var(--spacing-sm);">Wort Bingo</h1>
+        <p class="text-secondary" style="font-size: 16px; margin-bottom: var(--spacing-2xl);">
+            Das Ratespiel
+        </p>
+
+        <!-- Login Card -->
+        <div class="md-card-elevated" style="padding: var(--spacing-xl); text-align: left;">
+            <h2 style="margin-bottom: var(--spacing-sm); font-size: 24px;">Willkommen zurück!</h2>
+            <p class="text-secondary" style="margin-bottom: var(--spacing-xl);">
+                Bitte melde dich an, um mitzuspielen.
+            </p>
+
+            <form method="POST">
+                <!-- Username Input -->
+                <div class="md-input-container">
+                    <label class="md-label">Benutzername</label>
+                    <div style="position: relative;">
+                        <span class="material-symbols-rounded"
+                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">person</span>
+                        <input type="text" name="username" class="md-input" placeholder="Dein Benutzername" required
+                            autofocus style="padding-left: 48px;">
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="md-input-container">
+                    <label class="md-label">Passwort</label>
+                    <div style="position: relative;">
+                        <span class="material-symbols-rounded"
+                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--md-on-surface-variant); font-size: 20px;">lock</span>
+                        <input type="password" name="password" class="md-input" placeholder="Dein Passwort" required
+                            style="padding-left: 48px;">
+                    </div>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="md-button md-button-filled w-full"
+                    style="height: 48px; font-size: 16px; margin-top: var(--spacing-md);">
+                    <span>Anmelden</span>
+                    <span class="material-symbols-rounded">arrow_forward</span>
+                </button>
+            </form>
         </div>
 
-        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem; font-size: 1.1rem;">
-            Anmelden <i class="fa-solid fa-arrow-right"></i>
-        </button>
-    </form>
-
-    <div style="margin-top: 2.5rem; font-size: 0.9rem;">
-        <p style="margin-bottom: 1.5rem;"><a href="#" style="color: var(--text-muted); text-decoration: none;">Passwort
-                vergessen?</a></p>
-        <div style="width: 50%; height: 1px; background: rgba(255,255,255,0.1); margin: 0 auto 1.5rem;"></div>
-        <p style="color: var(--text-muted);">Kein Account? Frag den Admin!</p>
+        <!-- Footer Info -->
+        <div style="margin-top: var(--spacing-xl);">
+            <div class="md-divider" style="opacity: 0.3;"></div>
+            <p class="text-secondary" style="margin-top: var(--spacing-lg); font-size: 14px;">
+                Kein Account? Frag den Admin!
+            </p>
+        </div>
     </div>
 </div>
 {% endblock %}
